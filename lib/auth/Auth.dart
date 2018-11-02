@@ -15,6 +15,8 @@ class AuthState extends State<Auth> {
   Widget build(BuildContext context) {
     String uri = AuthState.uri + "?client_id=${globals.clientId}&response_type=token";
     return WebviewScaffold(
+      clearCache: true,
+        clearCookies: true,
       appBar: AppBar(
         title: Text("Auth")
       ),
@@ -54,7 +56,11 @@ class AuthState extends State<Auth> {
           globals.userId = params["account_id"];
           globals.expiresIn = params["expires_in"];
         });
-//        config.me = Imgur.getMe(config.accessToken);
+        var tmp = await Imgur.getAccount("me");
+        setState(() {
+          print(tmp);
+          globals.me = tmp;
+        });
 
         await flutterWebviewPlugin.close();
         Navigator.pop(context);

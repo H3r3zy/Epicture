@@ -1,16 +1,17 @@
-//client_id = b56aec72c75dae4
 import 'dart:convert';
-
+import 'package:epicture_flutter/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 
 class Imgur {
-  static const clientId = "b56aec72c75dae4";
   static const globalEndpoint = "https://api.imgur.com/3/";
 
   static getHeaders() {
-    var header = {
-      "Authorization": "Client-ID " + Imgur.clientId
-    };
+    Map<String, String> header = {};
+    if (globals.accessToken != null) {
+      header["Authorization"] = "Bearer " + globals.accessToken;
+    } else {
+      header["Authorization"] = "Client-ID " + globals.clientId;
+    }
 
     return header;
   }
@@ -75,7 +76,9 @@ class Imgur {
 
     var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
 
-    return json.decode(res.body)["data"];
+    var data = json.decode(res.body)["data"];
+    data["createdAt"] = new DateTime.fromMillisecondsSinceEpoch(data["created"] * 1000);
+    return data;
   }
 
   static getImagesOfUser({page = 0, username}) async {

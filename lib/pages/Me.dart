@@ -1,4 +1,5 @@
 import 'package:epicture_flutter/auth/Auth.dart';
+import 'package:epicture_flutter/widgets/profile/ProfileHeader.dart';
 import 'package:flutter/material.dart';
 import 'package:epicture_flutter/globals.dart' as globals;
 
@@ -26,6 +27,7 @@ class MeState extends State<Me> {
     return Container(
       child: Column(
         children: [
+          (globals.me != null) ? ProfileHeader(user: globals.me) : Container(),
           Text(globals.username)
         ]
       )

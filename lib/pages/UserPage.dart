@@ -88,7 +88,6 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
     Imgur.getAccount(this.username).then((res) {
       setState(() {
         this.user = res;
-        this.user["createdAt"] = new DateTime.fromMillisecondsSinceEpoch(this.user["created"] * 1000);
       });
     });
   }
