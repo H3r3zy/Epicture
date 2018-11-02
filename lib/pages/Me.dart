@@ -1,6 +1,6 @@
-import 'package:epicture_flutter/app_config.dart';
 import 'package:epicture_flutter/auth/Auth.dart';
 import 'package:flutter/material.dart';
+import 'package:epicture_flutter/globals.dart' as globals;
 
 // Created by sahel the 02/11/18 at 19:40
 
@@ -8,14 +8,26 @@ class MeState extends State<Me> {
 
   @override
   Widget build(BuildContext context) {
-    var config = AppConfig.of(context);
-
-    if (config.username == null)
-      return Container(child: Center(child: Text("Connectez vous")));
+    if (globals.username == null)
+      return Container(
+          child: Center(
+              child: FlatButton(
+                color: Colors.white,
+                child: Text("Auth"),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Auth();
+                  }));
+                },
+              )
+          )
+      );
 
     return Container(
-      child: Center(
-        child: Text(config.username),
+      child: Column(
+        children: [
+          Text(globals.username)
+        ]
       )
     );
   }

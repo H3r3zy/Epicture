@@ -1,6 +1,7 @@
-import 'package:epicture_flutter/app_config.dart';
+import 'package:epicture_flutter/imgur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:epicture_flutter/globals.dart' as globals;
 
 // Created by sahel the 02/11/18 at 19:09
 
@@ -9,12 +10,10 @@ class AuthState extends State<Auth> {
   FlutterWebviewPlugin flutterWebviewPlugin;
   static final uri = "https://api.imgur.com/oauth2/authorize";
   static final responseUri = "https://imgur.com/#";
-  AppConfig config;
 
   @override
   Widget build(BuildContext context) {
-    this.config = AppConfig.of(context);
-    String uri = AuthState.uri + "?client_id=${config.clientId}&response_type=token";
+    String uri = AuthState.uri + "?client_id=${globals.clientId}&response_type=token";
     return WebviewScaffold(
       appBar: AppBar(
         title: Text("Auth")
@@ -45,17 +44,18 @@ class AuthState extends State<Auth> {
     this.flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) async {
       var url = state.url;
       RegExp exp = new RegExp("^$responseUri");
-      print(url);
 
       if (exp.hasMatch(url)) {
         var params = getParams(url);
-        print(params);
+        setState(() {
+          globals.accessToken = params["access_token"];
+          globals.refreshToken = params["refresh_token"];
+          globals.username = params["account_username"];
+          globals.userId = params["account_id"];
+          globals.expiresIn = params["expires_in"];
+        });
+//        config.me = Imgur.getMe(config.accessToken);
 
-        config.accessToken = params["access_token"];
-        config.refreshToken = params["refresh_token"];
-        config.expiresIn = params["expiresIn"];
-        config.username = params["account_username"];
-        config.userId = params["account_id"];
         await flutterWebviewPlugin.close();
         Navigator.pop(context);
       }
