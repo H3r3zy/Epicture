@@ -66,8 +66,6 @@ class GalleryState extends State<Gallery> {
             return new Container(color: Colors.white);
           object["uri"] = uri;
 
-          print(object);
-
           return (new Container(
               margin: EdgeInsets.all(2.5),
               color: Color.fromRGBO(55, 55, 55, 1.0),
@@ -144,7 +142,6 @@ class GalleryState extends State<Gallery> {
       double delta = 200.0;
 
       if (maxScroll - currentScroll <= delta) {
-        print("CALL");
         this.callback(this.page + 1).then((tmp) {
           if (!this.mounted)
             return;

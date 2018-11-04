@@ -47,6 +47,7 @@ class CommentState extends State<Comment> {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
         children: [
           Container(
@@ -62,7 +63,7 @@ class CommentState extends State<Comment> {
                 });
               },
                 child: ListTile(
-                    leading: Avatar(username: _comment["author"]),
+                    leading: Avatar(username: _comment["author"], url: this._comment["avatar"].toString()),
                     title: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,6 +123,13 @@ class CommentState extends State<Comment> {
   @override
   void initState() {
     super.initState();
+    if (this._comment["avatar"] == null) {
+      Imgur.getAvatarAccount(this._comment["author"]).then((res) {
+        setState(() {
+          this._comment["avatar"] = res["avatar"];
+        });
+      });
+    }
 
     this.replyCount = (_comment["children"] != null && _comment["children"].length != 0)
         ? _comment["children"].length : 0;

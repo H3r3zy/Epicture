@@ -1,5 +1,6 @@
 import 'package:epicture_flutter/auth/Auth.dart';
 import 'package:epicture_flutter/pages/Me.dart';
+import 'package:epicture_flutter/pages/PostPage.dart';
 import 'package:epicture_flutter/pages/home.dart';
 import 'package:epicture_flutter/pages/searchpage.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     new Home(),
     new SearchPage(),
+    new PostPage(),
     new Me()
   ];
   ScrollController _scroll;
@@ -82,9 +84,14 @@ class HomePageState extends State<HomePage> {
                 title: new Text('Search', style: TextStyle(color: Colors.white)),
               ),
               BottomNavigationBarItem(
-                  backgroundColor: Color.fromRGBO(16, 16, 16, 1.0),
-                  icon: Icon(Icons.account_box, color: (_currentIndex != 2) ? Color.fromRGBO(75, 75, 75, 1.0) : Colors.white),
-                  title: Text("Profile", style: TextStyle(color: Colors.white)),
+                backgroundColor: Color.fromRGBO(16, 16, 16, 1.0),
+                icon: Icon(Icons.photo_camera, color: (_currentIndex != 2) ? Color.fromRGBO(75, 75, 75, 1.0) : Colors.white),
+                title: Text("Upload", style: TextStyle(color: Colors.white)),
+              ),
+              BottomNavigationBarItem(
+                backgroundColor: Color.fromRGBO(16, 16, 16, 1.0),
+                icon: Icon(Icons.account_box, color: (_currentIndex != 3) ? Color.fromRGBO(75, 75, 75, 1.0) : Colors.white),
+                title: Text("Profile", style: TextStyle(color: Colors.white)),
               )
             ],
           ),

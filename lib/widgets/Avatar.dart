@@ -13,16 +13,16 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (this.url != null) ? GestureDetector(
+    return (this.url != "null") ? GestureDetector(
       child: Container(
           alignment: Alignment.topCenter,
           width: this.size,
           height: this.size,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image: DecorationImage(
+              image: (this.url != null) ? DecorationImage(
                   image: CachedNetworkImageProvider(this.url)
-              )
+              ) : null
           )
       ),
       onTap: () {
