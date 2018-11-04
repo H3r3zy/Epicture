@@ -1,5 +1,7 @@
 import 'package:epicture_flutter/imgur.dart';
 import 'package:epicture_flutter/pages/imagepage.dart';
+import 'package:epicture_flutter/widgets/Avatar.dart';
+import 'package:epicture_flutter/widgets/card/CardImage.dart';
 import 'package:epicture_flutter/widgets/card/CardTags.dart';
 import 'package:epicture_flutter/widgets/card/card.action.dart';
 import 'package:epicture_flutter/widgets/card/card.header.dart';
@@ -27,23 +29,8 @@ class CardImgurState extends State<CardImgur> {
     return Card(
       child: Column(
           children: [
-            CardHeader(object: this.object),
-            Container(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                child: GestureDetector(
-                  child: Center(
-                      child: new CachedNetworkImage(
-                          imageUrl: uri,
-                          placeholder: new SizedBox(width: 32.0, height: 32.0, child: new CircularProgressIndicator())
-                      )
-                  ),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => new ImagePage(this.object)
-                    ));
-                  },
-                )
-            ),
+            CardHeader(object: this.object,),
+            CardImage(url: uri, image: this.object,),
             CardTags(object: this.object),
             CardAction(object: this.object)
           ]

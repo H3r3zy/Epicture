@@ -12,8 +12,9 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
   var user;
   ScrollController scrollController;
   TabController tabController;
+  final bool safeArea;
 
-  UserPageState(this.username);
+  UserPageState(this.username, this.safeArea);
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +28,7 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 
     return Scaffold(
       body: SafeArea(
+        top: this.safeArea,
         child: NestedScrollView(
                 controller: scrollController,
                 headerSliverBuilder: (BuildContext context, bool boxIsScrolled) {
@@ -42,30 +44,36 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
                     )
                   ];
                 },
-                body: Column(
-                  children: [
-                    ProfileHeader(user: this.user),
-                    TabBar(
-                      tabs: [
-                        Tab(text: "Posts"),
-                        Tab(text: "Comments")
-                      ],
-                      controller: tabController
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                        controller: tabController,
-                          children: [
-                            Gallery((page) async {
-                              return await Imgur.getImagesOfUser(page: page, username: this.user["url"]);
-                            }),
-                            Gallery((page) async {
-                              return await Imgur.getImagesOfUser(page: page, username: this.user["url"]);
-                            })
-                          ]
-                      )
-                    )
-                  ]
+                body: Container(
+                  color: Color.fromRGBO(35, 35, 35, 1.0),
+                  child: Column(
+                      children: [
+                        ProfileHeader(user: this.user),
+                        TabBar(
+                            tabs: [
+                              Tab(text: "Posts"),
+                              Tab(text: "Favorites")
+                            ],
+                            controller: tabController
+                        ),
+                        Expanded(
+                            child: Container(
+                              color: Color.fromRGBO(15, 15, 15, 1.0),
+                              child: TabBarView(
+                                  controller: tabController,
+                                  children: [
+                                    Gallery((page) async {
+                                      return await Imgur.getImagesOfUser(page: page, username: this.user["url"]);
+                                    }, grid: true),
+                                    Gallery((page) async {
+                                      return await Imgur.getFavorites(page: page, username: this.user["url"]);
+                                    }, grid: true)
+                                  ]
+                              )
+                            )
+                        )
+                      ]
+                  )
                 )
             ),
       )
@@ -95,9 +103,10 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 
 class UserPage extends StatefulWidget {
   final String username;
+  final bool safeArea;
 
-  UserPage({Key key, this.username}) : super(key: key);
+  UserPage({Key key, this.username, this.safeArea = true}) : super(key: key);
 
   @override
-  UserPageState createState() => new UserPageState(this.username);
+  UserPageState createState() => new UserPageState(this.username, this.safeArea);
 }

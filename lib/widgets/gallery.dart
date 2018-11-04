@@ -1,3 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:epicture_flutter/pages/imagepage.dart';
+import 'package:epicture_flutter/widgets/card/CardImage.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:epicture_flutter/widgets/card.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +11,10 @@ class GalleryState extends State<Gallery> {
   int page = 0;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
   var callback;
+  final bool grid;
+  final int gridSize;
 
-  GalleryState(this.callback);
+  GalleryState(this.callback, this.grid, this.gridSize);
 
   refresh() {
     setState(() {
@@ -29,13 +35,77 @@ class GalleryState extends State<Gallery> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      child: ListView.builder(
+    var child;
+
+    if (this.grid == false) {
+      child = ListView.builder(
+        physics: ScrollPhysics(),
+        addAutomaticKeepAlives: true,
+        primary: true,
+        cacheExtent: 1000.0,
         itemBuilder: (BuildContext context, int index) {
-                  return (new CardImgur(data[index]));
-                },
+          return (new CardImgur(data[index]));
+        },
         itemCount: data == null ? 0 : data.length,
-      ),
+      );
+    } else {
+      child = StaggeredGridView.countBuilder(
+        crossAxisCount: 2,
+        staggeredTileBuilder: (_) => StaggeredTile.fit(1),
+        itemBuilder: (context, index) {
+          var object = data[index];
+
+          var uri = (object["is_album"] == false) ?
+          object["link"] :
+          object["images"][0]["link"];
+
+          if (object["images"] != null && object["images"][0]["type"] == "video/mp4") {
+            return new Container(color: Colors.white);
+          }
+          if (uri.toString().indexOf("mp4") != -1)
+            return new Container(color: Colors.white);
+          object["uri"] = uri;
+
+          print(object);
+
+          return (new Container(
+              margin: EdgeInsets.all(2.5),
+              color: Color.fromRGBO(55, 55, 55, 1.0),
+              child: Column(
+                  children: [
+                    CardImage(url: object["uri"], image: object),
+                    Container(
+                      padding: EdgeInsets.all(5.0),
+                      child: Column(
+                        children: [
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(object["title"])
+                          ),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  Icon(Icons.arrow_upward, size: 11,color: Color.fromRGBO(180, 180, 180, 1.0),),
+                                  (object["score"] != null) ?
+                                  Text(" " + object["score"].toString() + " Points", style: TextStyle(color: Color.fromRGBO(180, 180, 180, 1.0), fontSize: 10)) :
+                                  Text(" " + object["points"].toString() + " Points", style: TextStyle(color: Color.fromRGBO(180, 180, 180, 1.0), fontSize: 10),)
+                                ]
+                              )
+                          )
+                        ]
+                      )
+                    )
+                  ]
+              )
+          ));
+        },
+        itemCount: data == null ? 0 : data.length,
+      );
+    }
+
+    return RefreshIndicator(
+      child: child,
       onRefresh: () async {
         setState(() {
           this.data = null;
@@ -74,6 +144,7 @@ class GalleryState extends State<Gallery> {
       double delta = 200.0;
 
       if (maxScroll - currentScroll <= delta) {
+        print("CALL");
         this.callback(this.page + 1).then((tmp) {
           if (!this.mounted)
             return;
@@ -96,9 +167,11 @@ class GalleryState extends State<Gallery> {
 
 class Gallery extends StatefulWidget {
   final callback;
+  final bool grid;
+  final int gridSize;
 
-  Gallery(this.callback, {Key key}): super(key:key);
+  Gallery(this.callback, {Key key, this.grid = false, this.gridSize = 2}): super(key:key);
 
   @override
-  GalleryState createState() => new GalleryState(this.callback);
+  GalleryState createState() => new GalleryState(this.callback, grid, gridSize);
 }

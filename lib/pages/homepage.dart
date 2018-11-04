@@ -16,7 +16,6 @@ class HomePageState extends State<HomePage> {
 
   void onTabTapped(int index) {
     setState(() {
-      print(index);
       this._currentIndex = index;
     });
   }
@@ -63,8 +62,6 @@ class HomePageState extends State<HomePage> {
               }
             )
         ),
-        /// _children[_currentIndex],
-
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
               canvasColor: Color.fromRGBO(16, 16, 16, 1.0)

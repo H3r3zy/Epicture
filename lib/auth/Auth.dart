@@ -8,6 +8,7 @@ import 'package:epicture_flutter/globals.dart' as globals;
 class AuthState extends State<Auth> {
   TextEditingController textEditingController;
   FlutterWebviewPlugin flutterWebviewPlugin;
+  var _listener;
   static final uri = "https://api.imgur.com/oauth2/authorize";
   static final responseUri = "https://imgur.com/#";
 
@@ -15,13 +16,13 @@ class AuthState extends State<Auth> {
   Widget build(BuildContext context) {
     String uri = AuthState.uri + "?client_id=${globals.clientId}&response_type=token";
     return WebviewScaffold(
-      clearCache: true,
-        clearCookies: true,
-      appBar: AppBar(
-        title: Text("Auth")
-      ),
-      url: uri,
-      withZoom: false
+        clearCache: false,
+        clearCookies: false,
+        appBar: AppBar(
+            title: Text("Auth")
+        ),
+        url: uri,
+        withZoom: false
     );
   }
 
@@ -43,22 +44,24 @@ class AuthState extends State<Auth> {
 
     this.flutterWebviewPlugin = new FlutterWebviewPlugin();
 
-    this.flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) async {
+    this._listener = this.flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) async {
       var url = state.url;
       RegExp exp = new RegExp("^$responseUri");
 
       if (exp.hasMatch(url)) {
         var params = getParams(url);
+
         setState(() {
           globals.accessToken = params["access_token"];
           globals.refreshToken = params["refresh_token"];
           globals.username = params["account_username"];
           globals.userId = params["account_id"];
-          globals.expiresIn = params["expires_in"];
+          globals.expiresIn = int.parse(params["expires_in"]);
+          globals.createdAt = new DateTime.now();
         });
+
         var tmp = await Imgur.getAccount("me");
         setState(() {
-          print(tmp);
           globals.me = tmp;
         });
 
@@ -66,6 +69,13 @@ class AuthState extends State<Auth> {
         Navigator.pop(context);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _listener.cancel();
+    flutterWebviewPlugin.dispose();
+    super.dispose();
   }
 }
 

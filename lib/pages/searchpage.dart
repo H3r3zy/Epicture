@@ -79,7 +79,8 @@ class SearchPageState extends State<SearchPage> with SingleTickerProviderStateMi
 
   getTags() async {
     var tags = await Imgur.getTags();
-
+    if (!this.mounted)
+      return;
     setState(() {
       this._tags = tags;
     });

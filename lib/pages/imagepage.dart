@@ -18,22 +18,24 @@ class ImagePageState extends State<ImagePage> {
       appBar: new AppBar(
         title: Text(image["title"])
       ),
-      body: ListView(
-        children: [
-          Center(
-            child: CachedNetworkImage(
-                imageUrl: image["uri"],
-                placeholder: new CircularProgressIndicator()
+      body: SingleChildScrollView(
+        child:  Column(
+            children: [
+              Center(
+                  child: CachedNetworkImage(
+                      imageUrl: image["uri"],
+                      placeholder: new CircularProgressIndicator()
+                  )
+              ),
+              CardAction(object: this.image),
+              CardTags(object: this.image),
+              Divider(color: Colors.white),
+
+            ]..addAll(
+                List.generate((_comments != null) ? _comments.length : 0, (index) {
+                  return Comment(comment: _comments[index]);
+                })
             )
-          ),
-          CardAction(object: this.image),
-          CardTags(object: this.image),
-          Divider(color: Colors.white),
-          
-        ]..addAll(
-            List.generate((_comments != null) ? _comments.length : 0, (index) {
-              return Comment(comment: _comments[index]);
-            })
         ),
       )
     );

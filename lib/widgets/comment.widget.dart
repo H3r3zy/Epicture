@@ -7,11 +7,43 @@ import 'package:flutter/material.dart';
 class CommentState extends State<Comment> {
   var _comment;
   double marginLeft = 0.0;
-  String _avatar;
   bool seeReply = false;
   int replyCount = 0;
+  bool sendVote = false;
 
   CommentState(this._comment, this.marginLeft);
+
+  setVote(vote) async {
+    if (sendVote)
+      return;
+    sendVote = true;
+    var lastVote = _comment["vote"];
+    if (lastVote != null && lastVote == vote)
+      vote = "veto";
+
+    var code = await Imgur.commentVote(_comment["id"].toString(), vote);
+
+    if (code != 200) {
+      showDialog(context: context, builder: (context) {
+        return AlertDialog(
+            content: Text("An error occurred", style: TextStyle(color: Colors.black))
+        );
+      });
+      sendVote = false;
+      return;
+    }
+    setState(() {
+      if (lastVote != null) {
+        _comment[lastVote + "s"]--;
+      }
+      if (vote == "up")
+        _comment["ups"]++;
+      if (vote == "down")
+        _comment["downs"]++;
+      _comment["vote"] = (vote == "veto") ? null : vote;
+    });
+    sendVote = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,21 +84,25 @@ class CommentState extends State<Comment> {
                               children: [
                                 FlatButton.icon(
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  icon: Icon(Icons.arrow_upward, color: Colors.white, size: 12),
-                                  label: Text(_comment["ups"].toString(), style: TextStyle(color: Colors.white, fontSize: 12)),
+                                  icon: Icon(Icons.arrow_upward, size: 12),
+                                  label: Text(_comment["ups"].toString(), style: TextStyle(fontSize: 12)),
                                   onPressed: () {
-                                    //TODO
-                                    mustBeConnected(context);
+                                    mustBeConnected(context, () {
+                                      setVote("up");
+                                    });
                                   },
+                                  textColor: _comment["vote"] != null && _comment["vote"] == "up" ? Colors.green : Colors.white,
                                 ),
                                 FlatButton.icon(
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  icon: Icon(Icons.arrow_downward, color: Colors.white, size: 12),
-                                  label: Text(_comment["downs"].toString(), style: TextStyle(color: Colors.white, fontSize: 12)),
+                                  icon: Icon(Icons.arrow_downward, size: 12),
+                                  label: Text(_comment["downs"].toString(), style: TextStyle(fontSize: 12)),
                                   onPressed: () {
-                                    //TODO
-                                    mustBeConnected(context);
+                                    mustBeConnected(context, () {
+                                      setVote("down");
+                                    });
                                   },
+                                  textColor: _comment["vote"] != null && _comment["vote"] == "down" ? Colors.red : Colors.white,
                                 ),
                               ]
                           ),

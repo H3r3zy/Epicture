@@ -88,4 +88,85 @@ class Imgur {
 
     return json.decode(res.body)["data"];
   }
+
+  static getToken() async {
+    var uri = "https://api.imgur.com/oauth2/token";
+    var data = {
+      "refresh_token": globals.refreshToken,
+      "client_id": globals.clientId,
+      "client_secret": globals.clientSecret,
+      "grant_type": "refresh_token"
+    };
+
+    var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders(), body: data);
+    return json.decode(res.body);
+  }
+
+  static vote(String galleryHash, String vote) async {
+    assert(vote == "up" || vote == "down" || vote == "veto");
+
+    var uri = globalEndpoint + "gallery/" + galleryHash + "/vote/" + vote;
+
+    var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return res.statusCode;
+  }
+
+  static imageFav(String imageHash) async {
+    var uri = globalEndpoint + "image/" + imageHash + "/favorite";
+
+    var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    print(res.body);
+    return res.statusCode;
+  }
+
+  static albumFav(String albumHash) async {
+    var uri = globalEndpoint + "album/" + albumHash + "/favorite";
+
+    var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return json.decode(res.body)["data"];
+  }
+
+  static commentVote(String commentId, String vote) async {
+    assert(vote == "up" || vote == "down" || vote == "veto");
+    var uri = globalEndpoint + "comment/" + commentId + "/vote/" + vote;
+
+    var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return res.statusCode;
+  }
+
+  static followTag(String tagName) async {
+    var uri = globalEndpoint + "account/me/follow/tag/" + tagName;
+
+    var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return res.statusCode;
+  }
+
+  static unfollowTag(String tagName) async {
+    var uri = globalEndpoint + "account/me/follow/tag/" + tagName;
+
+    var res = await http.delete(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return res.statusCode;
+  }
+
+  static getTag(String tagName) async {
+    var uri = globalEndpoint + "gallery/tag_info/" + tagName;
+
+    var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return json.decode(res.body)["data"];
+  }
+
+  static getFavorites({String username, int page = 0, String sort = "newest"}) async {
+    var uri = globalEndpoint + "account/$username/gallery_favorites/$page/$sort";
+
+    var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return json.decode(res.body)["data"];
+  }
 }

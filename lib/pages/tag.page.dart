@@ -16,6 +16,9 @@ class TagPageState extends State<TagPage> with SingleTickerProviderStateMixin {
     var images = await Imgur.tagSearch(tag: this.tag, page: this.page);
     images = images["items"];
 
+    if (!this.mounted)
+      return;
+
     setState(() {
       if (data == null)
         data = images;
