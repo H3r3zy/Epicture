@@ -63,7 +63,7 @@ class CommentState extends State<Comment> {
                 });
               },
                 child: ListTile(
-                    leading: Avatar(username: _comment["author"], url: this._comment["avatar"].toString()),
+                    leading: Avatar(username: _comment["author"], url: this._comment["avatar"]?.toString()),
                     title: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,

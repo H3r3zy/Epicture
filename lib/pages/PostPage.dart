@@ -18,9 +18,14 @@ class PostPageState extends State<PostPage> {
   @override
   Widget build(BuildContext context) {
     // TODO implement build
-    return Container(
-      child: Center(
-        child: Text("PHOTO")
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Upload")
+      ),
+      body: Container(
+          child: Center(
+              child: Text("PHOTO")
+          )
       )
     );
   }

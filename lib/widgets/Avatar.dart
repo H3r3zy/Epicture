@@ -13,7 +13,7 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (this.url != "null") ? GestureDetector(
+    return (this.url != "null" && this.url != null) ? GestureDetector(
       child: Container(
           alignment: Alignment.topCenter,
           width: this.size,
@@ -30,6 +30,6 @@ class Avatar extends StatelessWidget {
             builder: (context) => new UserPage(username: this.username)
         ));
       },
-    ) : Container();
+    ) : Container(constraints: BoxConstraints(maxHeight: 10.0),);
   }
 }

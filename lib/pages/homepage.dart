@@ -4,6 +4,7 @@ import 'package:epicture_flutter/pages/PostPage.dart';
 import 'package:epicture_flutter/pages/home.dart';
 import 'package:epicture_flutter/pages/searchpage.dart';
 import 'package:flutter/material.dart';
+import 'package:epicture_flutter/globals.dart' as globals;
 
 class HomePageState extends State<HomePage> {
   int _currentIndex = 0;
@@ -11,7 +12,6 @@ class HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     new Home(),
     new SearchPage(),
-    new PostPage(),
     new Me()
   ];
   ScrollController _scroll;
@@ -37,16 +37,6 @@ class HomePageState extends State<HomePage> {
                       pinned: false,
                       floating: false,
                       forceElevated: boxIsScrolled,
-                      actions: <Widget>[
-                        GestureDetector(
-                          child: Icon(Icons.account_circle),
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                                builder: (context) => new Auth()
-                            ));
-                          },
-                        )
-                      ],
                     ),
                 )
               ];
@@ -63,6 +53,28 @@ class HomePageState extends State<HomePage> {
                 );
               }
             )
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: (globals.accessToken != null) ? FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return PostPage();
+            }));
+          },
+          backgroundColor: Color.fromRGBO(35, 35, 35, 1.0),
+          child: Icon(Icons.add, color: Colors.white),
+          elevation: 2.0,
+          tooltip: "Upload",
+        ) : FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return Auth();
+            }));
+          },
+          backgroundColor: Color.fromRGBO(35, 35, 35, 1.0),
+          child: Icon(Icons.account_circle, color: Colors.white),
+          elevation: 2.0,
+          tooltip: "Authentication",
         ),
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
@@ -82,11 +94,6 @@ class HomePageState extends State<HomePage> {
                 backgroundColor: Color.fromRGBO(16, 16, 16, 1.0),
                 icon: new Icon(Icons.search, color: (_currentIndex != 1) ? Color.fromRGBO(75, 75, 75, 1.0) : Colors.white),
                 title: new Text('Search', style: TextStyle(color: Colors.white)),
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: Color.fromRGBO(16, 16, 16, 1.0),
-                icon: Icon(Icons.photo_camera, color: (_currentIndex != 2) ? Color.fromRGBO(75, 75, 75, 1.0) : Colors.white),
-                title: Text("Upload", style: TextStyle(color: Colors.white)),
               ),
               BottomNavigationBarItem(
                 backgroundColor: Color.fromRGBO(16, 16, 16, 1.0),
