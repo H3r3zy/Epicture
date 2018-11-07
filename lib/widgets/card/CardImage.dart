@@ -12,12 +12,23 @@ class CardImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double ratio = 0.0;
+
+    if (image["is_album"]) {
+      ratio = image["cover_width"] / image["cover_height"];
+    } else {
+      ratio = image["width"] / image["height"];
+    }
     return GestureDetector(
           child: Center(
-              child: CachedNetworkImage(
-                  imageUrl: this.url,
-                  placeholder: Center(child: CircularProgressIndicator())
-              )
+            child: AspectRatio(
+                child: CachedNetworkImage(
+                    imageUrl: this.url,
+                    placeholder: Center(child: CircularProgressIndicator())
+                ),
+              aspectRatio: ratio,
+            )
+
           ),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(

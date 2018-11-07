@@ -39,9 +39,9 @@ class GalleryState extends State<Gallery> {
 
     if (this.grid == false) {
       child = ListView.builder(
+        controller: _scroll,
         physics: ScrollPhysics(),
         addAutomaticKeepAlives: true,
-        primary: true,
         cacheExtent: 1000.0,
         itemBuilder: (BuildContext context, int index) {
           return (new CardImgur(data[index]));
