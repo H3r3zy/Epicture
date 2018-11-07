@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:epicture_flutter/functions/mustBeConnected.dart';
 import 'package:epicture_flutter/imgur.dart';
 import 'package:epicture_flutter/widgets/Avatar.dart';
+import 'package:epicture_flutter/widgets/CommentForm.dart';
 import 'package:flutter/material.dart';
 import 'package:epicture_flutter/globals.dart' as globals;
 
@@ -142,60 +143,22 @@ class CommentState extends State<Comment> {
           )
         ]..add(
           (reply) ?
-          (Container(
-            margin:EdgeInsets.only(left: this.marginLeft + 7.0),
-            decoration: BoxDecoration(
-                color: Color.fromRGBO(15, 15, 15, 0.5),
-                border: Border(left: BorderSide(color: Colors.white), bottom: BorderSide(color: Color.fromRGBO(35, 35, 35, 1.0)))
-            ),
-            child: ListTile(
-                leading: Avatar(username: globals.username, url: globals.me["avatar"]?.toString()),
-                title: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(globals.username, style: TextStyle(color: Color.fromRGBO(220, 220, 220, 1.0), fontSize: 10)),
-                          ]
-                      ),
-                      TextField(
-                        onSubmitted: (text) async {
-                          setState(() {
-                            reply = false;
-                          });
-                          print(_comment);
-                          var res = await Imgur.sendReply(imageId: _comment["image_id"], commentId: _comment["id"].toString(), comment: text);
-                          print(res);
-                          var comment = await Imgur.getComment(commentId: res["id"].toString());
-
-                          setState(() {
-                            if (this._comment["children"] == null) {
-                              this._comment["children"] = [comment];
-                            } else {
-                              this._comment["children"].insert(0, comment);
-                            }
-                            replyCount++;
-                            seeReply = true;
-                          });
-                        },
-                        style: TextStyle(color: Colors.white),
-                        decoration: InputDecoration(
-                            hintText: "Comment",
-                            hintStyle: TextStyle(color: Color.fromRGBO(85, 85, 85, 1.0)),
-                            border: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.white
-                                )
-                            ),
-                        ),
-                        cursorColor: Color.fromRGBO(180, 180, 180, 1.0),
-                      ),
-                    ]
-
-                )
-            ),
+          (CommentForm(
+            marginLeft: this.marginLeft + 7.0,
+            parentId: _comment["id"].toString(),
+            imageId: _comment["image_id"],
+            callback: (comment) {
+              setState(() {
+                reply = false;
+                if (this._comment["children"] == null) {
+                  this._comment["children"] = [comment];
+                } else {
+                  this._comment["children"].insert(0, comment);
+                }
+                replyCount++;
+                seeReply = true;
+              });
+            }
           )) :
           (Container())
         )..addAll(

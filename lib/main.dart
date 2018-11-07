@@ -18,6 +18,7 @@ void main() {
       ),
     ),
     color: Color.fromRGBO(15, 15, 15, 1.0),
+    debugShowCheckedModeBanner: false,
   )
   );
 }

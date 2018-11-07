@@ -196,4 +196,22 @@ class Imgur {
 
     return res.statusCode;
   }
+
+  static sendComment({imageId, commentId, comment}) async {
+    var uri = globalEndpoint;
+
+    if (commentId != null) {
+      uri += "comment/$commentId";
+    } else {
+      uri += "comment";
+    }
+
+    var data = {
+      "image_id": imageId,
+      "comment": comment
+    };
+
+    var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders(), body: data);
+     return json.decode(res.body)["data"];
+  }
 }
