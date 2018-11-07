@@ -174,6 +174,8 @@ class CommentState extends State<Comment> {
     super.initState();
     if (this._comment["avatar"] == null) {
       Imgur.getAvatarAccount(this._comment["author"]).then((res) {
+        if (!this.mounted)
+          return;
         setState(() {
           this._comment["avatar"] = res["avatar"];
         });
