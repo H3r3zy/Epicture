@@ -50,6 +50,7 @@ class GalleryState extends State<Gallery> {
       );
     } else {
       child = StaggeredGridView.countBuilder(
+        controller: _scroll,
         crossAxisCount: 2,
         staggeredTileBuilder: (_) => StaggeredTile.fit(1),
         itemBuilder: (context, index) {

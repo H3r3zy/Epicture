@@ -117,7 +117,6 @@ class Imgur {
 
     var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders());
 
-    print(res.body);
     return res.statusCode;
   }
 
@@ -168,5 +167,33 @@ class Imgur {
     var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
 
     return json.decode(res.body)["data"];
+  }
+
+  static sendReply({String imageId, String commentId, String comment}) async {
+    var uri = globalEndpoint + "comment/$commentId";
+    Map<String, String> data = {
+      "image_id": imageId,
+      "comment": comment
+    };
+
+    var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders(), body: data);
+
+    return json.decode(res.body)["data"];
+  }
+
+  static getComment({String commentId}) async {
+    var uri = globalEndpoint + "comment/$commentId";
+
+    var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return json.decode(res.body)["data"];
+  }
+
+  static delComment({String commentId}) async {
+    var uri = globalEndpoint + "comment/$commentId";
+
+    var res = await http.delete(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return res.statusCode;
   }
 }

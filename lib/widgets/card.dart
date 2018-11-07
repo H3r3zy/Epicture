@@ -6,7 +6,6 @@ import 'package:epicture_flutter/widgets/card/CardTags.dart';
 import 'package:epicture_flutter/widgets/card/card.action.dart';
 import 'package:epicture_flutter/widgets/card/card.header.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class CardImgurState extends State<CardImgur> {
   var object;

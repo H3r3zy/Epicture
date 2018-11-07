@@ -64,6 +64,10 @@ class AuthState extends State<Auth> {
         setState(() {
           globals.me = tmp;
         });
+        var avatar = Imgur.getAvatarAccount("me");
+        setState(() {
+          globals.me["avatar"] = avatar;
+        });
 
         await flutterWebviewPlugin.close();
         Navigator.pop(context);

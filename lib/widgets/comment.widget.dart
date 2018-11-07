@@ -3,6 +3,7 @@ import 'package:epicture_flutter/functions/mustBeConnected.dart';
 import 'package:epicture_flutter/imgur.dart';
 import 'package:epicture_flutter/widgets/Avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:epicture_flutter/globals.dart' as globals;
 
 class CommentState extends State<Comment> {
   var _comment;
@@ -10,6 +11,8 @@ class CommentState extends State<Comment> {
   bool seeReply = false;
   int replyCount = 0;
   bool sendVote = false;
+  bool edit = false; // TODO gestion du edit
+  bool reply = false;
 
   CommentState(this._comment, this.marginLeft);
 
@@ -76,43 +79,126 @@ class CommentState extends State<Comment> {
                                     ? ((!seeReply)
                                       ? Text(replyCount.toString() + ((replyCount == 1) ? " reply" : " replies"), style: TextStyle(color: Colors.white, fontSize: 10))
                                       : Text("x", style: TextStyle(color: Colors.white, fontSize: 10)))
-                                    : Text("")
-                              ]
+                                    : null,
+                                (this._comment["author"] == globals.username) ?
+                                (FlatButton(child: Text("delete", style: TextStyle(color: Colors.redAccent, fontSize: 10)),
+                                  onPressed: () async {
+                                    await Imgur.delComment(commentId: this._comment["id"].toString());
+                                    setState(() {
+                                      this._comment["comment"] = "[DELETED]";
+                                    });
+                                  },)) :
+                                (null)
+                              ].where((a) => a != null).toList()
                           ),
                           Text(_comment["comment"], style: TextStyle(color: Color.fromRGBO(170, 170, 170, 1.0))),
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                FlatButton.icon(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  icon: Icon(Icons.arrow_upward, size: 12),
-                                  label: Text(_comment["ups"].toString(), style: TextStyle(fontSize: 12)),
-                                  onPressed: () {
-                                    mustBeConnected(context, () {
-                                      setVote("up");
-                                    });
-                                  },
-                                  textColor: _comment["vote"] != null && _comment["vote"] == "up" ? Colors.green : Colors.white,
-                                ),
-                                FlatButton.icon(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  icon: Icon(Icons.arrow_downward, size: 12),
-                                  label: Text(_comment["downs"].toString(), style: TextStyle(fontSize: 12)),
-                                  onPressed: () {
-                                    mustBeConnected(context, () {
-                                      setVote("down");
-                                    });
-                                  },
-                                  textColor: _comment["vote"] != null && _comment["vote"] == "down" ? Colors.red : Colors.white,
-                                ),
-                              ]
-                          ),
+                          ButtonTheme.bar(
+                            minWidth: 0.0,
+                            child: ButtonBar(
+                                alignment: MainAxisAlignment.end,
+                                children: [
+                                  FlatButton(
+                                    padding: EdgeInsets.all(0.0),
+                                    child: Text("reply", style: TextStyle(fontSize: 12)),
+                                    textColor: Colors.white,
+                                    onPressed: () {
+                                      mustBeConnected(context, () {
+                                        setState(() {
+                                          reply = !reply;
+                                        });
+                                      });
+                                    },
+                                  ),
+                                  FlatButton.icon(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    icon: Icon(Icons.arrow_upward, size: 12),
+                                    label: Text(_comment["ups"].toString(), style: TextStyle(fontSize: 12)),
+                                    onPressed: () {
+                                      mustBeConnected(context, () {
+                                        setVote("up");
+                                      });
+                                    },
+                                    textColor: _comment["vote"] != null && _comment["vote"] == "up" ? Colors.green : Colors.white,
+                                  ),
+                                  FlatButton.icon(
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                    icon: Icon(Icons.arrow_downward, size: 12),
+                                    label: Text(_comment["downs"].toString(), style: TextStyle(fontSize: 12)),
+                                    onPressed: () {
+                                      mustBeConnected(context, () {
+                                        setVote("down");
+                                      });
+                                    },
+                                    textColor: _comment["vote"] != null && _comment["vote"] == "down" ? Colors.red : Colors.white,
+                                  ),
+                                ]
+                            ),
+                          )
+
                         ]
                     )
                 )
             ),
           )
-        ]..addAll(
+        ]..add(
+          (reply) ?
+          (Container(
+            margin:EdgeInsets.only(left: this.marginLeft + 7.0),
+            decoration: BoxDecoration(
+                color: Color.fromRGBO(15, 15, 15, 0.5),
+                border: Border(left: BorderSide(color: Colors.white), bottom: BorderSide(color: Color.fromRGBO(35, 35, 35, 1.0)))
+            ),
+            child: ListTile(
+                leading: Avatar(username: globals.username, url: globals.me["avatar"]?.toString()),
+                title: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(globals.username, style: TextStyle(color: Color.fromRGBO(220, 220, 220, 1.0), fontSize: 10)),
+                          ]
+                      ),
+                      TextField(
+                        onSubmitted: (text) async {
+                          setState(() {
+                            reply = false;
+                          });
+                          print(_comment);
+                          var res = await Imgur.sendReply(imageId: _comment["image_id"], commentId: _comment["id"].toString(), comment: text);
+                          print(res);
+                          var comment = await Imgur.getComment(commentId: res["id"].toString());
+
+                          setState(() {
+                            if (this._comment["children"] == null) {
+                              this._comment["children"] = [comment];
+                            } else {
+                              this._comment["children"].insert(0, comment);
+                            }
+                            replyCount++;
+                            seeReply = true;
+                          });
+                        },
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                            hintText: "Comment",
+                            hintStyle: TextStyle(color: Color.fromRGBO(85, 85, 85, 1.0)),
+                            border: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.white
+                                )
+                            ),
+                        ),
+                        cursorColor: Color.fromRGBO(180, 180, 180, 1.0),
+                      ),
+                    ]
+
+                )
+            ),
+          )) :
+          (Container())
+        )..addAll(
           List.generate((seeReply) ? replyCount : 0, (index) {
             return Comment(comment: this._comment["children"][index], marginLeft: this.marginLeft + 7.0);
           })
