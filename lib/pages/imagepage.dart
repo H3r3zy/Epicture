@@ -6,7 +6,6 @@ import 'package:epicture_flutter/widgets/card/CardTags.dart';
 import 'package:epicture_flutter/widgets/card/card.action.dart';
 import 'package:epicture_flutter/widgets/comment.widget.dart';
 import 'package:flutter/material.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 
 class ImagePageState extends State<ImagePage>
     with SingleTickerProviderStateMixin {
