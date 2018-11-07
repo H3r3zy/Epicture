@@ -21,7 +21,6 @@ class Imgur {
 
     var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
 
-    print("AAAA");
     return json.decode(res.body)["data"];
     
   }

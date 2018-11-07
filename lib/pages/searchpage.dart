@@ -10,7 +10,7 @@ class SearchPageState extends State<SearchPage> with SingleTickerProviderStateMi
   var _tags;
   var _tagsWidget;
 
-  //todo expandable search
+  // TODO maybe made search with showSearch
   tagsCreator(context) {
     var res = <Widget>[];
 
