@@ -15,6 +15,7 @@ class Avatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return (this.url != "null" && this.url != null) ? GestureDetector(
       child: Container(
+          constraints: BoxConstraints(maxHeight: this.size),
           alignment: Alignment.topCenter,
           width: this.size,
           height: this.size,
