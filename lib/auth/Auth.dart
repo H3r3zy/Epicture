@@ -59,14 +59,13 @@ class AuthState extends State<Auth> {
           globals.expiresIn = int.parse(params["expires_in"]);
           globals.createdAt = new DateTime.now();
         });
-
         var tmp = await Imgur.getAccount("me");
         setState(() {
           globals.me = tmp;
         });
-        var avatar = Imgur.getAvatarAccount("me");
+        var avatar = await Imgur.getAvatarAccount("me");
         setState(() {
-          globals.me["avatar"] = avatar;
+          globals.me["avatar"] = avatar["avatar"];
         });
 
         await flutterWebviewPlugin.close();

@@ -22,7 +22,7 @@ class CommentFormState extends State<CommentForm> {
           border: Border(left: BorderSide(color: Colors.white), bottom: BorderSide(color: Color.fromRGBO(35, 35, 35, 1.0)))
       ),
       child: ListTile(
-          leading: Avatar(username: globals.username, url: globals.me["avatar"]?.toString()),
+          leading: Avatar(username: globals.username, url: (globals.me == null) ? null : (globals.me["avatar"])?.toString()),
           title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
