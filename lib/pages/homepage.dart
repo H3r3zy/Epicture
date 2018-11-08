@@ -37,6 +37,21 @@ class HomePageState extends State<HomePage> {
                       pinned: false,
                       floating: false,
                       forceElevated: boxIsScrolled,
+                      actions: (globals.accessToken != null) ? [
+                        IconButton(
+                          icon: Icon(Icons.exit_to_app),
+                          onPressed: () {
+                            setState(() {
+                              globals.accessToken = null;
+                              globals.refreshToken = null;
+                              globals.username = null;
+                              globals.createdAt = null;
+                              globals.expiresIn = null;
+                              globals.me = null;
+                            });
+                          },
+                        )
+                      ] : [],
                     ),
                 )
               ];
@@ -97,7 +112,7 @@ class HomePageState extends State<HomePage> {
               ),
               BottomNavigationBarItem(
                 backgroundColor: Color.fromRGBO(16, 16, 16, 1.0),
-                icon: Icon(Icons.account_box, color: (_currentIndex != 3) ? Color.fromRGBO(75, 75, 75, 1.0) : Colors.white),
+                icon: Icon(Icons.account_box, color: (_currentIndex != 2) ? Color.fromRGBO(75, 75, 75, 1.0) : Colors.white),
                 title: Text("Profile", style: TextStyle(color: Colors.white)),
               )
             ],
