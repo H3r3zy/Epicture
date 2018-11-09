@@ -66,4 +66,4 @@ DateTime get createdAt {
   var tmp = prefs?.get("createdAt");
   return DateTime.parse(tmp);
 }
-set createdAt(DateTime value) => prefs?.setString("createdAt", value.toIso8601String());
+set createdAt(DateTime value) => prefs?.setString("createdAt", value?.toIso8601String());

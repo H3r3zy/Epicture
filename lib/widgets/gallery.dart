@@ -13,6 +13,7 @@ class GalleryState extends State<Gallery> {
   var callback;
   final bool grid;
   final int gridSize;
+  bool requested = false;
 
   GalleryState(this.callback, this.grid, this.gridSize);
 
@@ -41,8 +42,7 @@ class GalleryState extends State<Gallery> {
       child = ListView.builder(
         controller: _scroll,
         physics: ScrollPhysics(),
-        addAutomaticKeepAlives: true,
-        cacheExtent: 1000.0,
+        cacheExtent: 10.0,
         itemBuilder: (BuildContext context, int index) {
           return (new CardImgur(data[index]));
         },
@@ -142,10 +142,13 @@ class GalleryState extends State<Gallery> {
       double currentScroll = _scroll.position.pixels;
       double delta = 200.0;
 
-      if (maxScroll - currentScroll <= delta) {
+      if (maxScroll - currentScroll <= delta && requested == false) { // TODO Test with 3 page and delete previous / past
+        requested = true;
         this.callback(this.page + 1).then((tmp) {
-          if (!this.mounted)
+          if (!this.mounted) {
+            requested = false;
             return;
+          }
           setState(() {
             if (this.data == null) {
               this.data = tmp;
@@ -155,6 +158,7 @@ class GalleryState extends State<Gallery> {
             }
 
             this.page += 1;
+            requested = false;
           });
         });
       }

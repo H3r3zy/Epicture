@@ -25,6 +25,14 @@ class Imgur {
     
   }
 
+  static getAlbumImages(String galleryHash) async {
+    var uri = globalEndpoint + "album/$galleryHash/images";
+
+    var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+    return json.decode(res.body)["data"];
+  }
+
   static search({String search = "", int page = 0}) async {
     var uri = globalEndpoint + "gallery/search/time/all/" + page.toString() + "?q=" + search;
 

@@ -15,6 +15,7 @@ class ImagePageState extends State<ImagePage>
   TabController controller;
   List<Widget> carousel = [];
   double maxRatio = 0.0;
+  int maxHeight = 0;
 
   ImagePageState(this.image);
 
@@ -32,10 +33,13 @@ class ImagePageState extends State<ImagePage>
         body: SingleChildScrollView(
           child: Column(
               children: [
-            (carousel.length != 1)
+            (carousel.length != 1 && controller != null)
                 ? Container(
                     margin: const EdgeInsets.only(top: 16.0),
-                    child: Row(children: <Widget>[
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: <Widget>[
                       IconButton(
                           icon: const Icon(Icons.chevron_left),
                           color: Colors.white,
@@ -51,14 +55,15 @@ class ImagePageState extends State<ImagePage>
                             handleArrow(1);
                           },
                           tooltip: 'Next image')
-                    ], mainAxisAlignment: MainAxisAlignment.spaceBetween))
+                    ], mainAxisAlignment: MainAxisAlignment.spaceBetween)))
                 : null,
-            AspectRatio(
+            (controller != null) ?
+            (AspectRatio(
                 aspectRatio: this.maxRatio,
                 child: TabBarView(
                   controller: controller,
                   children: carousel,
-                )),
+                ))) : null,
             CardAction(object: this.image),
             CardTags(object: this.image),
             Divider(color: Colors.white),
@@ -108,16 +113,26 @@ class ImagePageState extends State<ImagePage>
     });
 
     if (this.image["is_album"] == true) {
-      for (var img in this.image["images"]) {
-        carousel.add(AspectRatio(
-            aspectRatio: img["width"] / img["height"],
-            child: CachedNetworkImage(
-              imageUrl: img["link"],
-              placeholder: Center(child: CircularProgressIndicator()),
-            )));
-        if (this.maxRatio < img["width"] / img["height"])
+      Imgur.getAlbumImages(this.image["id"]).then((images) {
+        print(images);
+        this.image["images"] = images;
+        print(images.length);
+        for (var img in images) {
+          if (img["link"].toString().indexOf("mp4") != -1)
+            continue;
+          carousel.add(AspectRatio(
+              aspectRatio: img["width"] / img["height"],
+              child: CachedNetworkImage(
+                imageUrl: img["link"],
+                placeholder: Center(child: CircularProgressIndicator()),
+              )));
+          if (this.maxHeight < img["height"])
+            this.maxHeight = img["height"];
           this.maxRatio = img["width"] / img["height"];
-      }
+        }
+        controller = new TabController(length: carousel.length, vsync: this);
+      });
+
     } else {
       carousel.add(AspectRatio(
           aspectRatio: image["width"] / image["height"],
@@ -126,8 +141,8 @@ class ImagePageState extends State<ImagePage>
             placeholder: Center(child: CircularProgressIndicator()),
           )));
       this.maxRatio = image["width"] / image["height"];
+      controller = new TabController(length: carousel.length, vsync: this);
     }
-    controller = new TabController(length: carousel.length, vsync: this);
   }
 }
 

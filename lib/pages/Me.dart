@@ -1,6 +1,5 @@
 import 'package:epicture_flutter/auth/Auth.dart';
 import 'package:epicture_flutter/pages/UserPage.dart';
-import 'package:epicture_flutter/widgets/profile/ProfileHeader.dart';
 import 'package:flutter/material.dart';
 import 'package:epicture_flutter/globals.dart' as globals;
 

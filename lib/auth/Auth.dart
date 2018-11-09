@@ -7,7 +7,7 @@ import 'package:epicture_flutter/globals.dart' as globals;
 
 class AuthState extends State<Auth> {
   TextEditingController textEditingController;
-  FlutterWebviewPlugin flutterWebviewPlugin;
+  FlutterWebviewPlugin flutterWebviewPlugin = new FlutterWebviewPlugin();
   var _listener;
   static final uri = "https://api.imgur.com/oauth2/authorize";
   static final responseUri = "https://imgur.com/#";
@@ -38,11 +38,16 @@ class AuthState extends State<Auth> {
     return response;
   }
 
+  close() async {
+    print("BEFORE close");
+    var res = await flutterWebviewPlugin.close();
+    print("AFTER close $res");
+    Navigator.pop(context);
+  }
+
   @override
   void initState() {
     super.initState();
-
-    this.flutterWebviewPlugin = new FlutterWebviewPlugin();
 
     this._listener = this.flutterWebviewPlugin.onStateChanged.listen((WebViewStateChanged state) async {
       var url = state.url;
@@ -68,8 +73,7 @@ class AuthState extends State<Auth> {
           globals.me["avatar"] = avatar["avatar"];
         });
 
-        await flutterWebviewPlugin.close();
-        Navigator.pop(context);
+        close();
       }
     });
   }
