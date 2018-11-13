@@ -108,7 +108,7 @@ class GalleryState extends State<Gallery> {
 				setState(() {
 					this.data = null;
 
-					this.callback(this.page).then((res) {
+					this.callback(0).then((res) {
 						if (!this.mounted)
 							return;
 						setState(() {

@@ -75,7 +75,7 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 												}, grid: true),
 												Gallery((page) async {
 													return await Imgur.getFavorites(page: page, username: this.user["url"]);
-												}, grid: true)
+												}, grid: false)
 											]
 										)
 									)
