@@ -55,9 +55,9 @@ class GalleryState extends State<Gallery> {
 				itemBuilder: (context, index) {
 					var object = data[index];
 
-					var uri = (object["is_album"] == false) ?
-					object["link"] :
-					object["images"][0]["link"];
+					var uri = (object["is_album"] == null || object["is_album"] == false) ?
+						object["link"] :
+						object["images"][0]["link"];
 
 					if (object["images"] != null && object["images"][0]["type"] == "video/mp4") {
 						return new Container(color: Colors.white);
@@ -78,7 +78,7 @@ class GalleryState extends State<Gallery> {
 										children: [
 											Align(
 												alignment: Alignment.centerLeft,
-												child: Text(object["title"])
+												child: Text(object["title"] ?? "Unknown")
 											),
 											Align(
 												alignment: Alignment.centerLeft,

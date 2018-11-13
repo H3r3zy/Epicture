@@ -3,7 +3,6 @@ import 'package:epicture_flutter/globals.dart' as globals;
 import 'package:http/http.dart' as http;
 import 'dart:io';
 
-
 class Imgur {
 	static const globalEndpoint = "https://api.imgur.com/3/";
 
@@ -224,6 +223,17 @@ class Imgur {
 		return json.decode(res.body)["data"];
 	}
 
+	static getAccountImage() async {
+		var uri = globalEndpoint + "account/me/images";
+
+		var res = await http.get(
+			uri,
+			headers: Imgur.getHeaders()
+		);
+		print(json.decode(res.body)["data"]);
+		return json.decode(res.body)["data"];
+	}
+
 	static getAlbumListFromUser(username) async {
 		var url = globalEndpoint + "account/$username/albums/";
 		var response = await http.get(url,
@@ -233,7 +243,7 @@ class Imgur {
 	}
 
 	static getAlbumListFromUserByPage(page, username) async {
-		var url =  globalEndpoint + "account/$username/albums/$page";
+		var url = globalEndpoint + "account/$username/albums/$page";
 		var response = await http.get(url,
 			headers: Imgur.getHeaders()
 		);
@@ -241,7 +251,7 @@ class Imgur {
 	}
 
 	static getAlbumData(id, username) async {
-		var url =  globalEndpoint + "account/$username/album/$id";
+		var url = globalEndpoint + "account/$username/album/$id";
 		var response = await http.get(url,
 			headers: Imgur.getHeaders()
 		);
@@ -249,7 +259,7 @@ class Imgur {
 	}
 
 	static createAlbum(title, description, privacy) async {
-		var url =  globalEndpoint + "album";
+		var url = globalEndpoint + "album";
 
 		var response = await http.post(url,
 			headers: Imgur.getHeaders(),
@@ -262,7 +272,7 @@ class Imgur {
 	}
 
 	static updateAlbumParams(id, title, description, privacy) async {
-		var url =  globalEndpoint + "album/$id";
+		var url = globalEndpoint + "album/$id";
 
 		var response = await http.post(url,
 			headers: Imgur.getHeaders(),
@@ -275,7 +285,7 @@ class Imgur {
 	}
 
 	static uploadImage(title, description, File image, privacy) async {
-		var url =  globalEndpoint + "image";
+		var url = globalEndpoint + "image";
 
 		List<int> imageBytes = image.readAsBytesSync();
 		String base64Image = base64Encode(imageBytes);

@@ -14,7 +14,7 @@ class CardImage extends StatelessWidget {
   Widget build(BuildContext context) {
     double ratio = 0.0;
 
-    if (image["is_album"]) {
+    if (image["is_album"] != null && image["is_album"]) {
       ratio = image["images"][0]["width"] / image["images"][0]["height"];
     } else {
       ratio = image["width"] / image["height"];

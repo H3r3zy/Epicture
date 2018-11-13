@@ -53,8 +53,8 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 									tabs: [
 										Tab(text: "Posts"),
 										Tab(text: "Favorites"),
-										Tab(text: "Gallery"),
-										Tab(text: "Albums")
+										Tab(text: "Albums"),
+										Tab(text: "Images"),
 									],
 									controller: tabController
 								),
@@ -72,11 +72,13 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 												}, grid: true),
 												Gallery((page) async {
 													return await Imgur.getFavorites(page: page, username: this.user["url"]);
-												}, grid: true),
+												}, grid: false),
 												Gallery((page) async {
-													return await Imgur.getFavorites(page: page, username: this.user["url"]);
-												}, grid: false)
-											]
+													if (page > 0)
+														return [];
+													return await Imgur.getAccountImage();
+												}, grid: true),
+													]
 										)
 									)
 								)

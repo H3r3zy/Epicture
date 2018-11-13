@@ -51,6 +51,8 @@ class CommentState extends State<Comment> {
 
 	@override
 	Widget build(BuildContext context) {
+		if (this._comment == null)
+			return Container();
 		return Column(
 			children: [
 				Container(
@@ -173,8 +175,10 @@ class CommentState extends State<Comment> {
 	@override
 	void initState() {
 		super.initState();
+		if (this._comment == null)
+			return;
 		if (this._comment["avatar"] == null) {
-			Imgur.getAvatarAccount(this._comment["author"]).then((res) {
+			Imgur.getAvatarAccount(this._comment["author"] ?? this._comment["account_url"]).then((res) {
 				if (!this.mounted)
 					return;
 				setState(() {

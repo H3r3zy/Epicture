@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:epicture_flutter/globals.dart' as globals;
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -28,7 +26,6 @@ class PostPageState extends State<PostPage> {
 			setState(() {
 				_submit = true;
 			});
-			print("Privacy: ${_data.privacy}");
 			await Imgur.uploadImage(_data.title, _data.description, _data.image, _data.privacy);
 			Navigator.pop(context);
 		}
