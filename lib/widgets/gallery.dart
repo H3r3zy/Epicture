@@ -71,7 +71,7 @@ class GalleryState extends State<Gallery> {
 						color: Color.fromRGBO(55, 55, 55, 1.0),
 						child: Column(
 							children: [
-								CardImage(url: object["uri"], image: object),
+								CardImage(url: object["uri"], image: object, parent: this),
 								Container(
 									padding: EdgeInsets.all(5.0),
 									child: Column(

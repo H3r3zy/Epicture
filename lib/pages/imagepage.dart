@@ -7,6 +7,7 @@ import 'package:epicture_flutter/widgets/card/CardTags.dart';
 import 'package:epicture_flutter/widgets/card/card.action.dart';
 import 'package:epicture_flutter/widgets/comment.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:epicture_flutter/pages/ImageSettings.dart';
 
 class ImagePageState extends State<ImagePage>
 	with SingleTickerProviderStateMixin {
@@ -26,6 +27,13 @@ class ImagePageState extends State<ImagePage>
 				.animateTo((controller.index + delta).clamp(0, carousel.length - 1));
 	}
 
+	manageReturnSettingsImage() async {
+		var res = await Navigator.push(context, MaterialPageRoute(builder: (context) => new ImageSettings(this.image)));
+
+		if (res != null && res == "destroy")
+			Navigator.pop(context, "reload");
+	}
+
 	AppBar getAppBar() {
 		var bar_image_from_another = new AppBar(
 			title: Text(image["title"] ?? "Unknown"),
@@ -36,6 +44,7 @@ class ImagePageState extends State<ImagePage>
 				IconButton(
 					icon: const Icon(Icons.settings),
 					onPressed: () {
+						manageReturnSettingsImage();
 					},
 				),
 			],
