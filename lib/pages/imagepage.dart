@@ -112,8 +112,7 @@ class ImagePageState extends State<ImagePage>
 
 		Imgur.getComments(image["id"]).then((res) {
 			setState(() {
-        if (res is Map<String, String>) {
-			    print("init");
+        if (res is Map<String, dynamic>) {
           _comments = [];
         } else
   				_comments = res;
