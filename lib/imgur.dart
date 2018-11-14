@@ -97,6 +97,14 @@ class Imgur {
 		return json.decode(res.body)["data"];
 	}
 
+	static destroyImageOfUser(username, id) async {
+		var uri = globalEndpoint + "/image/$id";
+
+		var res = await http.delete(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+
+		return json.decode(res.body)["data"];
+	}
+
 	static getToken() async {
 		var uri = "https://api.imgur.com/oauth2/token";
 		var data = {
