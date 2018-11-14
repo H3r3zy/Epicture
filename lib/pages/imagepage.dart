@@ -26,11 +26,28 @@ class ImagePageState extends State<ImagePage>
 				.animateTo((controller.index + delta).clamp(0, carousel.length - 1));
 	}
 
+	Widget getAppBar() {
+		var bar_image_from_another = new AppBar(
+			title: Text(image["title"] ?? "Unknown"),
+		);
+		var bar_image = new AppBar(
+			title: Text(image["title"] ?? "Unknown"),
+			actions: <Widget>[
+				IconButton(
+					icon: const Icon(Icons.settings),
+					onPressed: () {
+					},
+				),
+			],
+		);
+		return (globals.username != this.image["account_url"]) ? bar_image_from_another : bar_image;
+	}
+
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
 			backgroundColor: Color.fromRGBO(35, 35, 35, 1.0),
-			appBar: new AppBar(title: Text(image["title"] ?? "Unknown")),
+			appBar: getAppBar(),
 			body: SingleChildScrollView(
 				child: Column(
 					children: [
@@ -113,9 +130,11 @@ class ImagePageState extends State<ImagePage>
 		super.initState();
 
 		Imgur.getComments(image["id"]).then((res) {
-			print(res);
 			setState(() {
-				_comments = res;
+				if (res is Map<String, dynamic>) {
+					_comments = [];
+				} else
+					_comments = res;
 			});
 		});
 
