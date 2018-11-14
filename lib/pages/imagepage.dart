@@ -26,7 +26,7 @@ class ImagePageState extends State<ImagePage>
 				.animateTo((controller.index + delta).clamp(0, carousel.length - 1));
 	}
 
-	Widget getAppBar() {
+	AppBar getAppBar() {
 		var bar_image_from_another = new AppBar(
 			title: Text(image["title"] ?? "Unknown"),
 		);

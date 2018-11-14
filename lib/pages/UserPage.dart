@@ -4,6 +4,7 @@ import 'package:epicture_flutter/widgets/Avatar.dart';
 import 'package:epicture_flutter/widgets/gallery.dart';
 import 'package:epicture_flutter/widgets/profile/ProfileHeader.dart';
 import 'package:flutter/material.dart';
+import 'package:epicture_flutter/globals.dart' as globals;
 
 // Created by sahel the 02/11/18 at 10:57
 
@@ -15,6 +16,26 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 	final bool safeArea;
 
 	UserPageState(this.username, this.safeArea);
+
+	Widget getTabBar() {
+		var me = TabBar(
+			tabs: [
+				Tab(text: "Posts"),
+				Tab(text: "Favorites"),
+				Tab(text: "Albums"),
+				Tab(text: "Images"),
+			],
+			controller: tabController
+		);
+		var someone_else = TabBar(
+			tabs: [
+				Tab(text: "Posts"),
+				Tab(text: "Favorites"),
+			],
+			controller: tabController
+		);
+		return (this.user["url"] == globals.username ? me : someone_else);
+	}
 
 	@override
 	Widget build(BuildContext context) {
@@ -49,15 +70,7 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 						child: Column(
 							children: [
 								ProfileHeader(user: this.user),
-								TabBar(
-									tabs: [
-										Tab(text: "Posts"),
-										Tab(text: "Favorites"),
-										Tab(text: "Albums"),
-										Tab(text: "Images"),
-									],
-									controller: tabController
-								),
+								getTabBar(),
 								Expanded(
 									child: Container(
 										color: Color.fromRGBO(15, 15, 15, 1.0),
