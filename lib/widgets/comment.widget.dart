@@ -76,7 +76,7 @@ class CommentState extends State<Comment> {
 									Row(
 										mainAxisAlignment: MainAxisAlignment.spaceBetween,
 										children: [
-											Text(_comment["author"], style: TextStyle(color: Color.fromRGBO(220, 220, 220, 1.0), fontSize: 10)),
+											Text(_comment["author"] ?? _comment["account_url"] ?? globals.username, style: TextStyle(color: Color.fromRGBO(220, 220, 220, 1.0), fontSize: 10)),
 											(replyCount != 0)
 												? ((!seeReply)
 												? Text(replyCount.toString() + ((replyCount == 1) ? " reply" : " replies"), style: TextStyle(color: Colors.white, fontSize: 10))
@@ -178,7 +178,7 @@ class CommentState extends State<Comment> {
 		if (this._comment == null)
 			return;
 		if (this._comment["avatar"] == null) {
-			Imgur.getAvatarAccount(this._comment["author"] ?? this._comment["account_url"]).then((res) {
+			Imgur.getAvatarAccount(this._comment["author"] ?? this._comment["account_url"] ?? globals.username).then((res) {
 				if (!this.mounted)
 					return;
 				setState(() {

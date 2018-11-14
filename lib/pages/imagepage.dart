@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 class ImagePageState extends State<ImagePage>
 	with SingleTickerProviderStateMixin {
-	final image;
+	var image;
 	var _comments;
 	bool comment = false;
 	TabController controller;
@@ -86,11 +86,13 @@ class ImagePageState extends State<ImagePage>
 							callback: (cmt) {
 								setState(() {
 									this.comment = false;
-									print(_comments);
+									if (cmt == null)
+									  return;
 									if (_comments == null) {
 										this._comments = [cmt];
 									} else {
 										this._comments.insert(0, cmt);
+										print(this._comments);
 									}
 								});
 							},
@@ -107,9 +109,14 @@ class ImagePageState extends State<ImagePage>
 	@override
 	void initState() {
 		super.initState();
+
 		Imgur.getComments(image["id"]).then((res) {
 			setState(() {
-				_comments = res;
+			  if (res["error"] != null) {
+			    print("init");
+          _comments = [];
+        } else
+  				_comments = res;
 			});
 		});
 

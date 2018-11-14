@@ -230,8 +230,19 @@ class Imgur {
 			uri,
 			headers: Imgur.getHeaders()
 		);
-		print(json.decode(res.body)["data"]);
-		return json.decode(res.body)["data"];
+		var data = json.decode(res.body)["data"];
+
+		for (var d in data) {
+      if (d["ups"] == null)
+        d["ups"] = 0;
+      if (d["downs"] == null)
+        d["downs"] = 0;
+      if (d["favorite_count"] == null)
+        d["favorite_count"] = 0;
+      if (d["score"] == null)
+        d["score"] = 0;
+    }
+		return data;
 	}
 
 	static getAlbumListFromUser(username) async {

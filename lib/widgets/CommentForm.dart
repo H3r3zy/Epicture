@@ -37,6 +37,9 @@ class CommentFormState extends State<CommentForm> {
                   onSubmitted: (text) async {
 
                     var res = await Imgur.sendComment(imageId: this.imageId, commentId: this.parentId, comment: text);
+                    if (res["error"] != null) {
+                      return this.callback(null);
+                    }
                     var comment = await Imgur.getComment(commentId: res["id"].toString());
 
                     this.callback(comment);
