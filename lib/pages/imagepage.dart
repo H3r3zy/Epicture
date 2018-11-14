@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:epicture_flutter/functions/mustBeConnected.dart';
+import 'package:epicture_flutter/globals.dart' as globals;
 import 'package:epicture_flutter/imgur.dart';
 import 'package:epicture_flutter/widgets/CommentForm.dart';
 import 'package:epicture_flutter/widgets/card/CardTags.dart';
@@ -67,6 +68,7 @@ class ImagePageState extends State<ImagePage>
 						CardAction(object: this.image),
 						CardTags(object: this.image),
 						Divider(color: Colors.white),
+						(globals.username == this.image["account_url"] && (_comments == null || _comments.length == 0)) ? null :
 						Center(
 							child: FlatButton(
 								child: Text("Add Comment", style: TextStyle(color: Colors.white)),
@@ -77,7 +79,7 @@ class ImagePageState extends State<ImagePage>
 										});
 									});
 								},
-							))
+							)),
 					].where((a) => a != null).toList()
 						..add((comment)
 							? (CommentForm(
