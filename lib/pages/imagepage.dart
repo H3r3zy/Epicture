@@ -87,7 +87,7 @@ class ImagePageState extends State<ImagePage>
 								setState(() {
 									this.comment = false;
 									if (cmt == null)
-									  return;
+										return;
 									if (_comments == null) {
 										this._comments = [cmt];
 									} else {
@@ -111,12 +111,9 @@ class ImagePageState extends State<ImagePage>
 		super.initState();
 
 		Imgur.getComments(image["id"]).then((res) {
+			print(res);
 			setState(() {
-			  if (res["error"] != null) {
-			    print("init");
-          _comments = [];
-        } else
-  				_comments = res;
+				_comments = res;
 			});
 		});
 
