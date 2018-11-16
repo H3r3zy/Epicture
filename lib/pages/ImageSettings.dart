@@ -3,6 +3,7 @@ import 'package:epicture_flutter/imgur.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:epicture_flutter/pages/Share.dart';
+import 'package:epicture_flutter/widgets/AlbumsList.dart';
 
 class ImageSettingsState extends State<ImageSettings> {
 	final _formKey = GlobalKey<FormState>();
@@ -67,6 +68,29 @@ class ImageSettingsState extends State<ImageSettings> {
 												style: new TextStyle(
 													fontSize: 25.0,
 													color: Colors.white,
+												),
+											),
+										),
+									),
+									new SizedBox(
+										width: double.infinity,
+										// height: double.infinity,
+										child: new RaisedButton(
+											padding: const EdgeInsets.all(8.0),
+											textColor: Colors.black,
+											color: Colors.white,
+											onPressed: () {
+												Navigator.push(
+													context,
+													MaterialPageRoute(
+														builder: (context) => new albumPage(image["id"])
+													)
+												);
+											},
+											child: new Text(
+												"Manage album",
+												style: new TextStyle(
+													fontSize: 25.0,
 												),
 											),
 										),
@@ -166,10 +190,8 @@ class ImageSettingsState extends State<ImageSettings> {
 											},
 										),
 									),
-									Container
-										(
-										margin:
-										const EdgeInsets.only (top: 10),
+									Container(
+										margin: const EdgeInsets.only (top: 10),
 										child: RaisedButton(
 											color: Colors.lightBlueAccent,
 											onPressed: () {

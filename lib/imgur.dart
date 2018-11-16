@@ -311,7 +311,29 @@ class Imgur {
 		var response = await http.get(url,
 			headers: Imgur.getHeaders()
 		);
-		return await json.decode(response.body);
+		return await json.decode(response.body)["data"];
+	}
+
+	static addImageToAnAlbum(id, image) async {
+		var url = globalEndpoint + "/album/$id/add";
+		var response = await http.post(url,
+			headers: Imgur.getHeaders(),
+			body: {
+				"ids[]": image
+			}
+		);
+		return await json.decode(response.body)["data"];
+	}
+
+	static removeImageToAnAlbum(id, image) async {
+		var url = globalEndpoint + "/album/$id/remove_images";
+		var response = await http.post(url,
+			headers: Imgur.getHeaders(),
+			body: {
+				"ids[]": image
+			}
+		);
+		return await json.decode(response.body)["data"];
 	}
 
 	static createAlbum(title, description, privacy) async {

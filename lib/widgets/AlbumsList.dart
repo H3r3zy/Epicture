@@ -5,11 +5,12 @@ import 'package:epicture_flutter/globals.dart' as globals;
 
 import 'package:epicture_flutter/pages/ManageAlbum.dart';
 import 'package:epicture_flutter/pages/album.dart';
+import 'package:epicture_flutter/pages/ImageAlbum.dart';
 
 class albumData {
 	final String id;
 	final String title;
-	final int images_count;
+	int images_count;
 	final String privacy;
 	final int views;
 
@@ -17,9 +18,13 @@ class albumData {
 }
 
 class albumPage extends StatefulWidget {
+	String image;
+
+	albumPage(this.image);
+
 	@override
 	State<StatefulWidget> createState() {
-		return albumPageState();
+		return albumPageState(image);
 	}
 }
 
@@ -29,6 +34,9 @@ class albumPageState extends State<albumPage> {
 	bool isPerformingRequest = false;
 	var index = 0;
 	bool getData = false;
+	String image;
+
+	albumPageState(this.image);
 
 	Future<List<albumData>> makeRequest() async {
 		var response = await Imgur.getAlbumListFromUserByPage(index, globals.username);
@@ -102,12 +110,72 @@ class albumPageState extends State<albumPage> {
 		await _getMoreData();
 	}
 
+	Widget albumPage(index) {
+		return ListTile(
+			title: new Text(
+				"${_albums[index].title}",
+				style: TextStyle(
+					color: Colors.white
+				),
+			),
+			trailing: InkWell(
+				child: const Icon(Icons.settings, color: Colors.white),
+				onTap: () {
+					updateDataAfterChange(new ManageAlbumPage(_albums[index].id));
+				},
+			),
+			// const Icon(Icons.settings),
+			subtitle: new Text(
+				"${_albums[index].privacy} - ${_albums[index].images_count} images - ${_albums[index].views} views",
+				style: TextStyle(color: Colors.grey),
+			),
+			onTap: () {
+				updateDataAfterChange(new album(_albums[index].id, _albums[index].title));
+			},
+		);
+	}
+
+	Widget imageAlbumManage(index) {
+		return ListTile(
+			title: new Text(
+				"${_albums[index].title}",
+				style: TextStyle(
+					color: Colors.white
+				),
+			),
+			trailing: InkWell(
+				child: const Icon(Icons.remove_red_eye, color: Colors.white),
+				onTap: () async {
+					var res = await Navigator.push(
+						context, MaterialPageRoute(
+						builder: (context) => new imageAlbum(image, _albums[index].id))
+					);
+					if (res != null)
+						_albums[index].images_count += ((res) ? 1 : -1);
+				},
+			),
+			// const Icon(Icons.settings),
+			subtitle: new Text(
+				"${_albums[index].privacy} - ${_albums[index].images_count} images - ${_albums[index].views} views",
+				style: TextStyle(color: Colors.grey),
+			),
+			onTap: () async {
+				var res = await Navigator.push(
+					context, MaterialPageRoute(
+					builder: (context) => new imageAlbum(image, _albums[index].id))
+				);
+				if (res != null)
+					_albums[index].images_count += ((res) ? 1 : -1);
+			},
+		);
+	}
+
 	@override
 	Widget build(BuildContext context) {
 		//display image selected from gallery
 		return new Scaffold(
 			appBar: new AppBar(
-				title: new Text('Add a new Albums'),
+				title: new Text((image == null) ? 'Add a new Albums' : "Manage album"),
 				actions: <Widget>[
 					// action button
 					IconButton(
@@ -126,28 +194,7 @@ class albumPageState extends State<albumPage> {
 						if (index + 1 == _albums.length) {
 							return _buildProgressIndicator();
 						} else {
-							return ListTile(
-								title: new Text(
-									"${_albums[index].title}",
-									style: TextStyle(
-										color: Colors.white
-									),
-								),
-								trailing: InkWell(
-									child: const Icon(Icons.settings, color: Colors.white),
-									onTap: () {
-										updateDataAfterChange(new ManageAlbumPage(_albums[index].id));
-									},
-								),
-								// const Icon(Icons.settings),
-								subtitle: new Text(
-									"${_albums[index].privacy} - ${_albums[index].images_count} images - ${_albums[index].views} views",
-									style: TextStyle(color: Colors.grey),
-								),
-								onTap: () {
-									updateDataAfterChange(new album(_albums[index].id, _albums[index].title));
-								},
-							);
+							return (image != null) ? imageAlbumManage(index) : albumPage(index);
 						}
 					},
 					controller: _scrollController,

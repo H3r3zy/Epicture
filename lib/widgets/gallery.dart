@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:epicture_flutter/pages/imagepage.dart';
 import 'package:epicture_flutter/widgets/card/CardImage.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+	import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:epicture_flutter/widgets/card.dart';
 import 'package:flutter/material.dart';
 
