@@ -43,10 +43,8 @@ class albumPageState extends State<albumPage> {
 
 	_getMoreData() async {
 		if (!isPerformingRequest) {
-			setState(() {
-				isPerformingRequest = true;
-				getData = true;
-			});
+			isPerformingRequest = true;
+			getData = true;
 			List<albumData> newEntries = await makeRequest();
 			if (newEntries.isEmpty) {
 				double edge = 50.0;
@@ -58,10 +56,9 @@ class albumPageState extends State<albumPage> {
 						curve: Curves.easeOut);
 				}
 			}
-			setState(() {
-				_albums.addAll(newEntries);
-				isPerformingRequest = false;
-			});
+			_albums.addAll(newEntries);
+			isPerformingRequest = false;
+			setState(() {});
 		}
 	}
 
@@ -102,7 +99,7 @@ class albumPageState extends State<albumPage> {
 		);
 		_albums.clear();
 		index = 0;
-		_getMoreData();
+		await _getMoreData();
 	}
 
 	@override

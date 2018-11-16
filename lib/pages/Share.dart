@@ -25,7 +25,12 @@ class ShareToCommunityState extends State<ShareToCommunity> {
 		if (this._formKey.currentState.validate()) {
 			_formKey.currentState.save(); // Save our form now.
 			_modal = true;
-			var res = await Imgur.shareImageWithTheCommunity(image["id"], _data.title, _data.topic, _data.tags);
+			var res;
+
+			if (image["is_album"] == null || image["is_album"] != true)
+				res = await Imgur.shareImageWithTheCommunity(image["id"], _data.title, _data.topic, _data.tags);
+			else
+				res = await Imgur.shareAlbumWithTheCommunity(image["id"], _data.title, _data.topic, _data.tags);
 			print(res);
 			if (res != null && res == true)
 				Navigator.pop(context, "leave");

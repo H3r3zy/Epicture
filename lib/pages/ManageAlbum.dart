@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:epicture_flutter/imgur.dart';
 import 'package:epicture_flutter/globals.dart' as globals;
+import 'package:epicture_flutter/pages/Share.dart';
 
 class albumData {
 	bool done = false;
@@ -90,7 +91,7 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 					child: new ListView(
 						padding: EdgeInsets.all(20.0),
 						children: [
-							(this.id == "") ? Container() :
+							(this.id == null) ? Container() :
 							new SizedBox(
 								width: double.infinity,
 								// height: double.infinity,
@@ -114,6 +115,56 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 									),
 								),
 							),
+							((true) ?
+							new SizedBox( // todo: create a class for this
+								width: double.infinity,
+								// height: double.infinity,
+								child: new RaisedButton(
+									padding: const EdgeInsets.all(8.0),
+									textColor: Colors.black,
+									color: Colors.white,
+									onPressed: () async {
+										var res = await Navigator.push(
+											context,
+											MaterialPageRoute(
+												builder: (context) => new ShareToCommunity({"id": this.id, "title": data.title, "is_album": true})
+											)
+										);
+										if (res != null)
+											Navigator.pop(context);
+									},
+									child: new Text(
+										"Share with the community",
+										style: new TextStyle(
+											fontSize: 25.0,
+											color: Colors.black,
+										),
+									),
+								),
+							) : new SizedBox(
+								width: double.infinity,
+								// height: double.infinity,
+								child: new RaisedButton(
+									padding: const EdgeInsets.all(8.0),
+									textColor: Colors.black,
+									color: Colors.white,
+									onPressed: () async {
+										_modal = true;
+										var res = await Imgur.removeFromTheGallery(this.id);
+										print(res);
+										_modal = false;
+										if (res == true)
+											Navigator.pop(context, "destroy");
+										setState(() {});
+									},
+									child: new Text(
+										"Remove from the gallery",
+										style: new TextStyle(
+											fontSize: 25.0,
+											color: Colors.black,
+										),
+									),
+								))),
 							Container(
 								margin: const EdgeInsets.only(top: 10),
 								child: TextFormField(
@@ -136,77 +187,104 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 										this.data.title = value;
 									}
 								),
-							),
-							Container(
-								margin: const EdgeInsets.only(top: 10),
+							), Container(
+								margin: const EdgeInsets.only(top
+									: 10),
 								child: TextFormField(
-									controller: descriptionController,
+									controller:
+									descriptionController,
 									decoration: InputDecoration(
 										hintText: 'Enter your album\'s descriptions',
 										fillColor: Colors.white,
-										filled: true,
+										filled:
+										true,
 										border: OutlineInputBorder(
-											borderRadius: BorderRadius.circular(5.0),
+											borderRadius: BorderRadius.
+											circular(5.0),
 										),
 									),
-									validator: (value) {},
+									validator
+										: (value) {}
+									,
 									onSaved: (String value) {
 										this.data.description = value;
-									},
+									}
+									,
 								),
 							),
 							Container(
-								margin: const EdgeInsets.only(top: 10),
-								child: Row(
+								margin: const
+								EdgeInsets.only(top: 10),
+								child
+									: Row(
 									mainAxisAlignment: MainAxisAlignment.center,
-									children: <Widget>[
+									children
+										: <Widget>[
 										new Radio(
-											onChanged: (String val) {
+											onChanged:
+												(String val) {
 												setState(() => data.privacy = val);
-											},
+											}
+											,
 											activeColor: Theme
 												.of(context)
-												.accentColor,
+												.
+											accentColor,
 											value: "secret",
-											groupValue: data.privacy,
+											groupValue:
+											data.privacy,
 										),
 										new Text(
 											'Secret',
-											style: new TextStyle(fontSize: 16.0),
-										),
-										new Radio(
-											onChanged: (String val) {
+											style: new TextStyle(fontSize:
+											16.0),
+										), new Radio(
+											onChanged:
+												(String val) {
 												setState(() => data.privacy = val);
-											},
+											}
+											,
 											activeColor: Theme
 												.of(context)
-												.accentColor,
+												.
+											accentColor,
 											value: "hidden",
-											groupValue: data.privacy,
+											groupValue:
+											data.privacy,
 										),
 										new Text(
 											'Hidden',
-											style: new TextStyle(fontSize: 16.0),
-										),
-										new Radio(
+											style: new TextStyle(fontSize:
+											16.0),
+										), new
+										Radio
+											(
 											onChanged: (String val) {
 												setState(() => data.privacy = val);
-											},
+											}
+											,
 											activeColor: Theme
 												.of(context)
-												.accentColor,
+												.
+											accentColor,
 											value: "public",
-											groupValue: data.privacy,
+											groupValue:
+											data.privacy,
 										),
 										new Text(
 											'Public',
-											style: new TextStyle(fontSize: 16.0),
+											style: new TextStyle(fontSize:
+											16.0),
 										),
-									],
+									]
+									,
 								)
-							),
-							Container(
-								margin: const EdgeInsets.only(top: 30),
+							)
+							,
+							Container
+								(
+								margin:
+								const EdgeInsets.only (top: 30),
 								child: RaisedButton(
 									color: Colors.lightBlueAccent,
 									onPressed: () {
@@ -214,14 +292,13 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 										// the form is invalid.
 										this.submit();
 									},
-									child: Text('Submit'),
+									child: Text((this.id == null) ? 'Submit' : "Update"),
 								),
 							),
-
 						]
 					)
-				),
-				inAsyncCall: _modal),
+				), inAsyncCall: _modal)
+			,
 		);
 	}
 }

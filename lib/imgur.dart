@@ -120,6 +120,21 @@ class Imgur {
 		return json.decode(res.body)["data"];
 	}
 
+	static shareAlbumWithTheCommunity(id, title, topic, tags) async {
+		var uri = globalEndpoint + "/gallery/album/$id";
+
+		var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders(),
+			body: {
+				"title": title,
+				"topic": topic,
+				"terms": "1",
+				"mature": "0",
+				"tags": tags,
+			}
+		);
+		return json.decode(res.body)["data"];
+	}
+
 	static removeFromTheGallery(id) async {
 		var uri = globalEndpoint + "/gallery/$id";
 
