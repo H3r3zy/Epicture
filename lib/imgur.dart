@@ -348,6 +348,18 @@ class Imgur {
 		return await json.decode(response.body);
 	}
 
+	static updateImageParams(id, title, description) async {
+		var url = globalEndpoint + "image/$id";
+
+		var response = await http.post(url,
+			headers: Imgur.getHeaders(),
+			body: {
+				"title": title,
+				"description": description,
+			});
+		return await json.decode(response.body);
+	}
+
 	static getAlbumImage(id) async {
 		var url = globalEndpoint + "/album/$id/images";
 		var response = await http.get(url,

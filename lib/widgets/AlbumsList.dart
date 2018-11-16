@@ -76,8 +76,8 @@ class albumPageState extends State<albumPage> {
 
 	@override
 	void dispose() {
-		_scrollController.dispose();
 		super.dispose();
+		_scrollController.dispose();
 	}
 
 	@override

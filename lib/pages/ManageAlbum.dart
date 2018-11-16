@@ -166,7 +166,7 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 									),
 								))),
 							Container(
-								margin: const EdgeInsets.only(top: 10),
+								margin: const EdgeInsets.only(top: 50),
 								child: TextFormField(
 									controller: titleController,
 									decoration: InputDecoration(
@@ -203,88 +203,68 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 											circular(5.0),
 										),
 									),
-									validator
-										: (value) {}
-									,
+									validator: (value) {},
 									onSaved: (String value) {
 										this.data.description = value;
-									}
-									,
+									},
 								),
 							),
 							Container(
 								margin: const
 								EdgeInsets.only(top: 10),
-								child
-									: Row(
+								child: Row(
 									mainAxisAlignment: MainAxisAlignment.center,
-									children
-										: <Widget>[
+									children: <Widget>[
 										new Radio(
-											onChanged:
-												(String val) {
+											onChanged: (String val) {
 												setState(() => data.privacy = val);
-											}
-											,
+											},
 											activeColor: Theme
 												.of(context)
-												.
-											accentColor,
+												.accentColor,
 											value: "secret",
-											groupValue:
-											data.privacy,
+											groupValue: data.privacy,
 										),
 										new Text(
 											'Secret',
-											style: new TextStyle(fontSize:
-											16.0),
+											style: new TextStyle(fontSize: 16.0),
 										), new Radio(
 											onChanged:
 												(String val) {
 												setState(() => data.privacy = val);
-											}
-											,
+											},
 											activeColor: Theme
 												.of(context)
-												.
-											accentColor,
+												.accentColor,
 											value: "hidden",
-											groupValue:
-											data.privacy,
+											groupValue: data.privacy,
 										),
 										new Text(
 											'Hidden',
 											style: new TextStyle(fontSize:
 											16.0),
 										), new
-										Radio
-											(
+										Radio (
 											onChanged: (String val) {
 												setState(() => data.privacy = val);
-											}
-											,
+											},
 											activeColor: Theme
 												.of(context)
-												.
-											accentColor,
+												.accentColor,
 											value: "public",
-											groupValue:
-											data.privacy,
+											groupValue: data.privacy,
 										),
 										new Text(
 											'Public',
-											style: new TextStyle(fontSize:
-											16.0),
+											style: new TextStyle(fontSize: 16.0),
 										),
 									]
 									,
 								)
 							)
 							,
-							Container
-								(
-								margin:
-								const EdgeInsets.only (top: 30),
+							Container(
+								margin: const EdgeInsets.only (top: 10),
 								child: RaisedButton(
 									color: Colors.lightBlueAccent,
 									onPressed: () {
