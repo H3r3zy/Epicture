@@ -105,6 +105,29 @@ class Imgur {
 		return json.decode(res.body)["data"];
 	}
 
+	static shareImageWithTheCommunity(id, title, topic, tags) async {
+		var uri = globalEndpoint + "/gallery/image/$id";
+
+		var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders(),
+			body: {
+				"title": title,
+				"topic": topic,
+				"terms": "1",
+				"mature": "0",
+				"tags": tags,
+			}
+		);
+
+		return json.decode(res.body)["data"];
+	}
+
+	static removeFromTheGallery(id) async {
+		var uri = globalEndpoint + "/gallery/$id";
+
+		var res = await http.delete(Uri.encodeFull(uri), headers: Imgur.getHeaders());
+		return json.decode(res.body)["data"];
+	}
+
 	static getToken() async {
 		var uri = "https://api.imgur.com/oauth2/token";
 		var data = {
@@ -241,15 +264,15 @@ class Imgur {
 		var data = json.decode(res.body)["data"];
 
 		for (var d in data) {
-      if (d["ups"] == null)
-        d["ups"] = 0;
-      if (d["downs"] == null)
-        d["downs"] = 0;
-      if (d["favorite_count"] == null)
-        d["favorite_count"] = 0;
-      if (d["score"] == null)
-        d["score"] = 0;
-    }
+			if (d["ups"] == null)
+				d["ups"] = 0;
+			if (d["downs"] == null)
+				d["downs"] = 0;
+			if (d["favorite_count"] == null)
+				d["favorite_count"] = 0;
+			if (d["score"] == null)
+				d["score"] = 0;
+		}
 		return data;
 	}
 

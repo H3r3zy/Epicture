@@ -77,7 +77,7 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 										child: TabBarView(
 											controller: tabController,
 											children: [
-													Gallery((page) async {
+												Gallery((page) async {
 													return await Imgur.getImagesOfUser(page: page, username: this.user["url"]);
 												}, grid: true),
 												Gallery((page) async {
@@ -91,7 +91,7 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 														return [];
 													return await Imgur.getAccountImage();
 												}, grid: true),
-													]
+											]
 										)
 									)
 								)
@@ -114,7 +114,7 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 	void initState() {
 		super.initState();
 		scrollController = new ScrollController();
-		tabController = TabController(length: 5, vsync: this);
+		tabController = TabController(length: 4, vsync: this);
 
 		Imgur.getAccount(this.username).then((res) {
 			setState(() {

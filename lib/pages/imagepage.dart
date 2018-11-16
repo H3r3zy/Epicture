@@ -30,7 +30,7 @@ class ImagePageState extends State<ImagePage>
 	manageReturnSettingsImage() async {
 		var res = await Navigator.push(context, MaterialPageRoute(builder: (context) => new ImageSettings(this.image)));
 
-		if (res != null && res == "destroy")
+		if (res != null && (res == "destroy" || res  == "shared"))
 			Navigator.pop(context, "reload");
 	}
 
