@@ -66,7 +66,8 @@ class albumPageState extends State<albumPage> {
 			}
 			_albums.addAll(newEntries);
 			isPerformingRequest = false;
-			setState(() {});
+			if (this.mounted)
+				setState(() {});
 		}
 	}
 
