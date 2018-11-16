@@ -5,6 +5,7 @@ import 'package:epicture_flutter/widgets/gallery.dart';
 import 'package:epicture_flutter/widgets/profile/ProfileHeader.dart';
 import 'package:flutter/material.dart';
 import 'package:epicture_flutter/globals.dart' as globals;
+import 'package:epicture_flutter/widgets/AlbumsList.dart';
 
 // Created by sahel the 02/11/18 at 10:57
 
@@ -83,9 +84,7 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 												Gallery((page) async {
 													return await Imgur.getFavorites(page: page, username: this.user["url"]);
 												}, grid: true),
-												Gallery((page) async {
-													return await Imgur.getFavorites(page: page, username: this.user["url"]);
-												}, grid: false),
+												albumPage(),
 												Gallery((page) async {
 													if (page > 0)
 														return [];

@@ -117,7 +117,6 @@ class Imgur {
 				"tags": tags,
 			}
 		);
-
 		return json.decode(res.body)["data"];
 	}
 
@@ -310,6 +309,14 @@ class Imgur {
 				"description": description,
 				"privacy": privacy
 			});
+		return await json.decode(response.body);
+	}
+
+	static deleteAlbum(id) async {
+		var url = globalEndpoint + "/album/$id";
+		var response = await http.delete(url,
+			headers: Imgur.getHeaders()
+		);
 		return await json.decode(response.body);
 	}
 
