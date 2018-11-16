@@ -91,7 +91,7 @@ class ImagePageState extends State<ImagePage>
 								controller: controller,
 								children: carousel,
 							))) : null,
-						CardAction(object: this.image),
+						(globals.username == this.image["account_url"] && (_comments == null || _comments.length == 0)) ? null : CardAction(object: this.image),
 						CardTags(object: this.image),
 						Divider(color: Colors.white),
 						(globals.username == this.image["account_url"] && (_comments == null || _comments.length == 0)) ? null :
