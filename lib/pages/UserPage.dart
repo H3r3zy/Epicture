@@ -57,12 +57,14 @@ class UserPageState extends State<UserPage> with SingleTickerProviderStateMixin 
 						return [
 							SliverOverlapAbsorber(
 								handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+								/* todo: Error on use TextFormField when we add this
 								child: SliverAppBar(
 									forceElevated: false,
 									centerTitle: true,
 									pinned: true,
 									backgroundColor: Colors.transparent,
 								),
+								*/
 							)
 						];
 					},
