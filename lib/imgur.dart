@@ -18,6 +18,10 @@ class Imgur {
 	}
 
 	static getImages({int page = 0, String type = "hot"}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "gallery/" + type + "/time/" + page.toString() + "?showViral=true&mature=true&album_previews=true";
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -26,6 +30,10 @@ class Imgur {
 	}
 
 	static getAlbumImages(String galleryHash) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "album/$galleryHash/images";
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -34,6 +42,10 @@ class Imgur {
 	}
 
 	static search({String search = "", int page = 0}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "gallery/search/time/all/" + page.toString() + "?q=" + search;
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -42,6 +54,10 @@ class Imgur {
 	}
 
 	static getTags() async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "tags";
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -54,6 +70,10 @@ class Imgur {
 	}
 
 	static tagSearch({String tag = "", int page = 0}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "gallery/t/" + tag + "/time/all/" + page.toString();
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -62,6 +82,10 @@ class Imgur {
 	}
 
 	static getComments(galleryHash, {sort: "best"}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "gallery/" + galleryHash + "/comments/" + sort;
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -70,6 +94,10 @@ class Imgur {
 	}
 
 	static getAvatarAccount(username) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "account/" + username + "/avatar";
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -80,6 +108,10 @@ class Imgur {
 	}
 
 	static getAccount(username) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "account/" + username;
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -90,6 +122,10 @@ class Imgur {
 	}
 
 	static getImagesOfUser({page = 0, username}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "account/" + username + "/submissions/" + page.toString();
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -98,6 +134,10 @@ class Imgur {
 	}
 
 	static destroyImageOfUser(username, id) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "/image/$id";
 
 		var res = await http.delete(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -106,6 +146,10 @@ class Imgur {
 	}
 
 	static shareImageWithTheCommunity(id, title, topic, tags) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "/gallery/image/$id";
 
 		var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders(),
@@ -121,6 +165,10 @@ class Imgur {
 	}
 
 	static shareAlbumWithTheCommunity(id, title, topic, tags) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "/gallery/album/$id";
 
 		var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders(),
@@ -136,6 +184,10 @@ class Imgur {
 	}
 
 	static removeFromTheGallery(id) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "/gallery/$id";
 
 		var res = await http.delete(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -143,6 +195,10 @@ class Imgur {
 	}
 
 	static getToken() async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = "https://api.imgur.com/oauth2/token";
 		var data = {
 			"refresh_token": globals.refreshToken,
@@ -156,6 +212,10 @@ class Imgur {
 	}
 
 	static vote(String galleryHash, String vote) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		assert(vote == "up" || vote == "down" || vote == "veto");
 
 		var uri = globalEndpoint + "gallery/" + galleryHash + "/vote/" + vote;
@@ -166,6 +226,10 @@ class Imgur {
 	}
 
 	static imageFav(String imageHash) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "image/" + imageHash + "/favorite";
 
 		var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -174,6 +238,10 @@ class Imgur {
 	}
 
 	static albumFav(String albumHash) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "album/" + albumHash + "/favorite";
 
 		var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -182,6 +250,10 @@ class Imgur {
 	}
 
 	static commentVote(String commentId, String vote) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		assert(vote == "up" || vote == "down" || vote == "veto");
 		var uri = globalEndpoint + "comment/" + commentId + "/vote/" + vote;
 
@@ -191,6 +263,10 @@ class Imgur {
 	}
 
 	static followTag(String tagName) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "account/me/follow/tag/" + tagName;
 
 		var res = await http.post(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -199,6 +275,10 @@ class Imgur {
 	}
 
 	static unfollowTag(String tagName) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "account/me/follow/tag/" + tagName;
 
 		var res = await http.delete(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -207,6 +287,10 @@ class Imgur {
 	}
 
 	static getTag(String tagName) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "gallery/tag_info/" + tagName;
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -215,6 +299,10 @@ class Imgur {
 	}
 
 	static getFavorites({String username, int page = 0, String sort = "newest"}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "account/$username/gallery_favorites/$page/$sort";
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -223,6 +311,10 @@ class Imgur {
 	}
 
 	static sendReply({String imageId, String commentId, String comment}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "comment/$commentId";
 		Map<String, String> data = {
 			"image_id": imageId,
@@ -235,6 +327,10 @@ class Imgur {
 	}
 
 	static getComment({String commentId}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "comment/$commentId";
 
 		var res = await http.get(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -243,6 +339,10 @@ class Imgur {
 	}
 
 	static delComment({String commentId}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "comment/$commentId";
 
 		var res = await http.delete(Uri.encodeFull(uri), headers: Imgur.getHeaders());
@@ -251,6 +351,10 @@ class Imgur {
 	}
 
 	static sendComment({imageId, commentId, comment}) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint;
 
 		if (commentId != null) {
@@ -269,6 +373,10 @@ class Imgur {
 	}
 
 	static getAccountImage() async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var uri = globalEndpoint + "account/me/images";
 
 		var res = await http.get(
@@ -291,6 +399,10 @@ class Imgur {
 	}
 
 	static getAlbumListFromUser(username) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "account/$username/albums/";
 		var response = await http.get(url,
 			headers: Imgur.getHeaders()
@@ -299,6 +411,10 @@ class Imgur {
 	}
 
 	static getAlbumListFromUserByPage(page, username) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "account/$username/albums/$page";
 		var response = await http.get(url,
 			headers: Imgur.getHeaders()
@@ -307,6 +423,10 @@ class Imgur {
 	}
 
 	static getAlbumData(id, username) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "account/$username/album/$id";
 		var response = await http.get(url,
 			headers: Imgur.getHeaders()
@@ -315,6 +435,10 @@ class Imgur {
 	}
 
 	static addImageToAnAlbum(id, image) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "/album/$id/add";
 		var response = await http.post(url,
 			headers: Imgur.getHeaders(),
@@ -326,6 +450,10 @@ class Imgur {
 	}
 
 	static removeImageToAnAlbum(id, image) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "/album/$id/remove_images";
 		var response = await http.post(url,
 			headers: Imgur.getHeaders(),
@@ -337,6 +465,10 @@ class Imgur {
 	}
 
 	static createAlbum(title, description, privacy) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "album";
 
 		var response = await http.post(url,
@@ -350,6 +482,10 @@ class Imgur {
 	}
 
 	static deleteAlbum(id) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "/album/$id";
 		var response = await http.delete(url,
 			headers: Imgur.getHeaders()
@@ -358,6 +494,10 @@ class Imgur {
 	}
 
 	static updateAlbumParams(id, title, description, privacy) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "album/$id";
 
 		var response = await http.post(url,
@@ -371,6 +511,10 @@ class Imgur {
 	}
 
 	static updateImageParams(id, title, description) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "image/$id";
 
 		var response = await http.post(url,
@@ -383,6 +527,10 @@ class Imgur {
 	}
 
 	static getAlbumImage(id) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "/album/$id/images";
 		var response = await http.get(url,
 			headers: Imgur.getHeaders()
@@ -391,6 +539,10 @@ class Imgur {
 	}
 
 	static uploadImage(title, description, File image, privacy) async {
+		// flutter_test
+		if (globals.isTest == true)
+			return globals.requestMock;
+
 		var url = globalEndpoint + "image";
 
 		List<int> imageBytes = image.readAsBytesSync();

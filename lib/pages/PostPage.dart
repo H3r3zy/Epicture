@@ -27,7 +27,7 @@ class PostPageState extends State<PostPage> {
 				_submit = true;
 			});
 			await Imgur.uploadImage(_data.title, _data.description, _data.image, _data.privacy);
-			Navigator.pop(context);
+			Navigator.pop(context, true);
 		}
 	}
 

@@ -176,7 +176,7 @@ class albumPageState extends State<albumPage> {
 		//display image selected from gallery
 		return new Scaffold(
 			appBar: new AppBar(
-				title: new Text((image == null) ? 'Add a new Albums' : "Manage album"),
+				title: new Text((image == null) ? 'Add a new Album' : "Manage album"),
 				actions: <Widget>[
 					// action button
 					IconButton(

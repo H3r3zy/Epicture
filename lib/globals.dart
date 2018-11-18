@@ -6,6 +6,10 @@ import "dart:convert";
 String clientId = "b56aec72c75dae4";
 String clientSecret = "befb3de6031c0f02f3ea01da53046e814b2f533b";
 
+// Automation Test
+bool isTest = false;
+var requestMock;
+
 SharedPreferences prefs;
 
 getPrefs(callback) async {
