@@ -8,6 +8,7 @@ import 'package:epicture_flutter/widgets/card/card.action.dart';
 import 'package:epicture_flutter/widgets/comment.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:epicture_flutter/pages/ImageSettings.dart';
+import 'package:epicture_flutter/pages/ManageAlbum.dart';
 
 class ImagePageState extends State<ImagePage>
 	with SingleTickerProviderStateMixin {
@@ -28,9 +29,14 @@ class ImagePageState extends State<ImagePage>
 	}
 
 	manageReturnSettingsImage() async {
-		var res = await Navigator.push(context, MaterialPageRoute(builder: (context) => new ImageSettings(this.image)));
+		var res = await Navigator.push(context, MaterialPageRoute(builder: (context) {
+			if ((carousel.length != 1 && controller != null))
+				return new ManageAlbumPage(this.image["id"]);
+			else
+				return new ImageSettings(this.image);
+		}));
 
-		if (res != null && (res == "destroy" || res  == "shared"))
+		if (res != null && (res == "destroy" || res == "shared"))
 			Navigator.pop(context, "reload");
 	}
 

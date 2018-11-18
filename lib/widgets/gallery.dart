@@ -55,11 +55,15 @@ class GalleryState extends State<Gallery> {
 				itemBuilder: (context, index) {
 					var object = data[index];
 
-					var uri = (object["is_album"] == null || object["is_album"] == false) ?
+					print("OBJECT");
+					print(object);
+					var uri = ((object["is_album"] == null || object["is_album"] == false) ?
 						object["link"] :
-						object["images"][0]["link"];
+					((object["images"].length == 0) ? "" : (object["images"][0]["link"])));
 
-					if (object["images"] != null && object["images"][0]["type"] == "video/mp4") {
+					print("IMAGES");
+					print(object);
+					if (object["images"] != null && (object["images"].length == 0 || object["images"][0]["type"] == "video/mp4")) {
 						return new Container(color: Colors.white);
 					}
 					if (uri.toString().indexOf("mp4") != -1)
@@ -87,7 +91,7 @@ class GalleryState extends State<Gallery> {
 														Icon(Icons.arrow_upward, size: 11, color: Color.fromRGBO(180, 180, 180, 1.0),),
 														(object["score"] != null) ?
 														Text(" " + object["score"].toString() + " Points", style: TextStyle(color: Color.fromRGBO(180, 180, 180, 1.0), fontSize: 10)) :
-														Text(" " + object["points"].toString() + " Points", style: TextStyle(color: Color.fromRGBO(180, 180, 180, 1.0), fontSize: 10),)
+														Text(" " + (object["points"] == null ? "0" : object["points"].toString()) + " Points", style: TextStyle(color: Color.fromRGBO(180, 180, 180, 1.0), fontSize: 10),)
 													]
 												)
 											)

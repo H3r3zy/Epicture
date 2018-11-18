@@ -9,6 +9,8 @@ class albumData {
 	String title;
 	String privacy;
 	String description;
+	int images_count = 0;
+	bool in_gallery = false;
 
 	albumData(this.title, this.privacy, this.description);
 }
@@ -37,14 +39,21 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 
 	getData() async {
 		_modal = true;
+		print("Hey 'im here");
 		var res = await Imgur.getAlbumData(this.id, globals.username);
-		if (res["success"] != true) {
+		print("RESPONSE");
+		print(res);
+		if (res["error"] != null) {
 			_modal = false;
+			setState(() {});
 			return;
 		}
-		data.title = res["data"]["title"];
-		data.description = res["data"]["description"];
-		data.privacy = res["data"]["privacy"];
+		print("SET THE DATA");
+		data.title = res["title"];
+		data.description = res["description"];
+		data.privacy = res["privacy"];
+		data.images_count = res["images_count"];
+		data.in_gallery = res["in_gallery"];
 		titleController.text = data.title;
 		descriptionController.text = data.description;
 		_modal = false;
@@ -55,7 +64,6 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 		if (this._formKey.currentState.validate()) {
 			_formKey.currentState.save(); // Save our form now.
 			_modal = true;
-			print(data);
 			var res;
 			if (this.id != "")
 				res = await Imgur.updateAlbumParams(this.id, data.title, data.description, data.privacy);
@@ -73,6 +81,7 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 
 		titleController.text = data.title;
 		descriptionController.text = data.description;
+		print("COUCOU");
 		if (this.id != null && data.done == false)
 			getData();
 		data.done = true;
@@ -115,8 +124,9 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 									),
 								),
 							),
-							((true) ?
-							new SizedBox( // todo: create a class for this
+							(this.id == null) ? Container() : (
+							((data.in_gallery == false) ?
+							new SizedBox(
 								width: double.infinity,
 								// height: double.infinity,
 								child: new RaisedButton(
@@ -127,7 +137,7 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 										var res = await Navigator.push(
 											context,
 											MaterialPageRoute(
-												builder: (context) => new ShareToCommunity({"id": this.id, "title": data.title, "is_album": true})
+												builder: (context) => new ShareToCommunity({"id": this.id, "title": data.title, "is_album": true, "images_count": data.images_count})
 											)
 										);
 										if (res != null)
@@ -164,7 +174,7 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 											color: Colors.black,
 										),
 									),
-								))),
+								)))),
 							Container(
 								margin: const EdgeInsets.only(top: 50),
 								child: TextFormField(

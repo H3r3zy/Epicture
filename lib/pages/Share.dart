@@ -29,8 +29,19 @@ class ShareToCommunityState extends State<ShareToCommunity> {
 
 			if (image["is_album"] == null || image["is_album"] != true)
 				res = await Imgur.shareImageWithTheCommunity(image["id"], _data.title, _data.topic, _data.tags);
-			else
+			else {
+				print("oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+				print(image);
+				print("IMAGES COUNT: ${image["images_count"]}");
+				if (image["images_count"] <= 1) {
+					error = true;
+					errorMsg = "U need to got at least 2 images to show an album";
+					_modal = false;
+					setState(() {});
+					return;
+				}
 				res = await Imgur.shareAlbumWithTheCommunity(image["id"], _data.title, _data.topic, _data.tags);
+			}
 			print(res);
 			if (res != null && res == true)
 				Navigator.pop(context, "leave");
