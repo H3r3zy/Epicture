@@ -39,9 +39,7 @@ class AuthState extends State<Auth> {
   }
 
   close() async {
-    print("BEFORE close");
     var res = await flutterWebviewPlugin.close();
-    print("AFTER close $res");
     Navigator.pop(context);
   }
 

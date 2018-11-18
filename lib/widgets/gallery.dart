@@ -55,14 +55,10 @@ class GalleryState extends State<Gallery> {
 				itemBuilder: (context, index) {
 					var object = data[index];
 
-					print("OBJECT");
-					print(object);
 					var uri = ((object["is_album"] == null || object["is_album"] == false) ?
 						object["link"] :
 					((object["images"].length == 0) ? "" : (object["images"][0]["link"])));
 
-					print("IMAGES");
-					print(object);
 					if (object["images"] != null && (object["images"].length == 0 || object["images"][0]["type"] == "video/mp4")) {
 						return new Container(color: Colors.white);
 					}

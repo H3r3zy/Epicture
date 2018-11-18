@@ -126,7 +126,6 @@ class ImagePageState extends State<ImagePage>
 										this._comments = [cmt];
 									} else {
 										this._comments.insert(0, cmt);
-										print(this._comments);
 									}
 								});
 							},
@@ -155,9 +154,7 @@ class ImagePageState extends State<ImagePage>
 
 		if (this.image["is_album"] == true) {
 			Imgur.getAlbumImages(this.image["id"]).then((images) {
-				print(images);
 				this.image["images"] = images;
-				print(images.length);
 				for (var img in images) {
 					if (img["link"].toString().indexOf("mp4") != -1)
 						continue;

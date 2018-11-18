@@ -131,7 +131,6 @@ class ImageSettingsState extends State<ImageSettings> {
 											onPressed: () async {
 												_modal = true;
 												var res = await Imgur.removeFromTheGallery(this.image["id"]);
-												print(res);
 												_modal = false;
 												if (res == true)
 													Navigator.pop(context, "destroy");

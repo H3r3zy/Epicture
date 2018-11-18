@@ -39,16 +39,12 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 
 	getData() async {
 		_modal = true;
-		print("Hey 'im here");
 		var res = await Imgur.getAlbumData(this.id, globals.username);
-		print("RESPONSE");
-		print(res);
 		if (res["error"] != null) {
 			_modal = false;
 			setState(() {});
 			return;
 		}
-		print("SET THE DATA");
 		data.title = res["title"];
 		data.description = res["description"];
 		data.privacy = res["privacy"];
@@ -81,7 +77,6 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 
 		titleController.text = data.title;
 		descriptionController.text = data.description;
-		print("COUCOU");
 		if (this.id != null && data.done == false)
 			getData();
 		data.done = true;
@@ -161,7 +156,6 @@ class ManageAlbumPageState extends State<ManageAlbumPage> {
 									onPressed: () async {
 										_modal = true;
 										var res = await Imgur.removeFromTheGallery(this.id);
-										print(res);
 										_modal = false;
 										if (res == true)
 											Navigator.pop(context, "destroy");

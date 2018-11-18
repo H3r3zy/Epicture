@@ -51,7 +51,6 @@ class imageAlbumState extends State<imageAlbum> {
 		ret.views = response["views"];
 		ret.privacy = response["privacy"];
 		ret.isIn = false;
-		print(response["images"]);
 		for (var img in response["images"]) {
 			if (img["id"] == image) {
 				ret.deletehash = response["deletehash"];
@@ -66,7 +65,6 @@ class imageAlbumState extends State<imageAlbum> {
 		albumData newEntries = await makeRequest();
 		_albums = newEntries;
 		isPerformingRequest = false;
-		print(_albums.title);
 		setState(() {});
 	}
 
@@ -124,7 +122,6 @@ class imageAlbumState extends State<imageAlbum> {
 										isPerformingRequest = true;
 
 										var res;
-										print(_albums.deletehash);
 										if (_albums.isIn == true)
 											res = await Imgur.removeImageToAnAlbum(album, _albums.deletehash);
 										else
